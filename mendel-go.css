@@ -1,0 +1,110 @@
+body {
+    padding-top: 75px;
+    padding-bottom: 75px;
+    background-color: #F5F5F5;
+}
+
+.page-width {
+    margin-left: 24px;
+    margin-right: 24px;
+}
+
+.page-width__inner {
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+.form-sections {
+    margin-top: 50px;
+}
+
+.form-section:not(:first-child) {
+    margin-top: 80px;
+}
+
+.form-section__title {
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    min-height: 34px;
+}
+
+.form-row:not(:first-child),
+.form-child-rows {
+    margin-top: 15px;
+}
+
+.form-row__label {
+    display: block;
+    width: calc(60% - 30px);
+    box-sizing: border-box;
+    font-weight: 400;
+    margin-bottom: 0;
+}
+
+.form-row__widget {
+    width: calc(40% - 30px);
+}
+
+.form-row__help {
+    width: 60px;
+    text-align: right;
+}
+
+.form-row input.form-control:not([type=submit]):not([type=file]):not([type=reset]):not([readonly]) {
+    background-color: #FFF !important;
+}
+
+.form-child-rows .form-row__label {
+    padding-left: 50px;
+}
+
+.form-submit-button {
+    margin-top: 70px;
+}
+
+.form-help-popover {
+    display: inline-block;
+    vertical-align: top;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    border-radius: 50%;
+    font-weight: 700;
+    background-color: #19A2D0;
+    color: #FFF;
+}
+
+.form-help-popover:hover,
+.form-help-popover:focus {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.form-help-popover:focus {
+    outline: none;
+    background-color: #46AED0;
+}
+
+.bootstrap-tagsinput {
+    margin-bottom: 0;
+    background-color: #FFF !important;
+}
+
+.bootstrap-tagsinput input:not([type=submit]):not([type=file]):not([type=reset]):not([readonly]) {
+    background-color: #FFF !important;
+}
+
+.user-manual-link {
+    margin-left: 17px;
+    margin-top: 10px;
+    display: inline-block;
+    vertical-align: top;
+}

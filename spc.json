@@ -1,0 +1,65 @@
+{
+    "assets": [
+        "mendel-go.css",
+        "mendel-go.js"
+    ],
+    "category": "",
+    "command": "../../../../apps/mendel-go/mendel-go -f mendel-go.ini",
+    "description": "Go version of Mendel's Accountant",
+    "input_format": "ini",
+    "language": "",
+    "name": "mendel-go",
+    "plots": [
+        {
+            "datasource": [
+                {
+                    "cols": "1:3",
+                    "data_def": "{label: \"deleterious\", data: d1, lines: { show: true }, color: \"rgb(200,0,0)\"}",
+                    "filename": "mendel.hst",
+                    "label": "deleterious",
+                    "line_range": "2:10000"
+                },
+                {
+                    "cols": "1:4",
+                    "data_def": "{label: \"neutral\", data: d2, lines: { show: true }, color: \"rgb(0,0,200)\"}",
+                    "filename": "mendel.hst",
+                    "label": "neutral",
+                    "line_range": "2:10000"
+                },
+                {
+                    "cols": "1:5",
+                    "data_def": "{label: \"favorable\", data: d3, lines: { show: true }, color: \"rgb(0,200,0)\"}",
+                    "filename": "mendel.hst",
+                    "label": "favorable",
+                    "line_range": "2:10000"
+                }
+            ],
+            "options": "legend: { position: 'nw' }, xaxis: { min: 1.0, axisLabel: 'Generations', axisLabelFontSizePixels: 12 }, yaxis: { axisLabel: 'Mutations', axisLabelFontSizePixels: 12 }, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }",
+            "ptype": "flot-scatter",
+            "title": "Average mutations/individual"
+        },
+        {
+            "datasource": [
+                {
+                    "cols": "1:6",
+                    "data_def": "{label: \"fitness\", data: d1, lines: { show: true }, color: \"rgb(200,0,0)\"}",
+                    "filename": "mendel.hst",
+                    "label": "fitness",
+                    "line_range": "2:10000"
+                },
+                {
+                    "cols": "1:2",
+                    "data_def": "{label: 'pop size', data: d2, lines: { show: true}, color: 'rgb(0,0,255)', yaxis: 2, position: 'right'}",
+                    "filename": "mendel.hst",
+                    "label": "pop size",
+                    "line_range": "2:10000"
+                }
+            ],
+            "options": "xaxes: [ { axisLabel: 'Generations', axisLabelFontSizePixels: 12 } ],  yaxes: [ { min: 0, axisLabel: 'Fitness', axisLabelFontSizePixels: 12 }, { position: 'right', min: 0, axisLabel: 'Population Size', axisLabelFontSizePixels: 12} ], legend: { position: 'se'}, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }",
+            "ptype": "flot-scatter",
+            "title": "Fitness history"
+        }
+    ],
+    "postprocess": "",
+    "preprocess": ""
+}

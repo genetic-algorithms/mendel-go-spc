@@ -31,24 +31,23 @@
     }
 
     function initCustomRelations() {
-        polygenicBeneficials();
+        crossoverModel();
 
-        function polygenicBeneficials() {
-            var checkbox = document.querySelector('input[name="polygenic_beneficials"]');
+        function crossoverModel() {
+            var select = document.querySelector('select[name="crossover_model"]');
 
             var relatedElements = [
-                document.querySelector('input[name="polygenic_init"]').parentNode.querySelector('.text-form-field__visible'),
-                document.querySelector('input[name="polygenic_target"]').parentNode.querySelector('.text-form-field__visible'),
-                document.querySelector('input[name="polygenic_effect"]'),
+                document.querySelector('input[name="mean_num_crossovers"]'),
+                document.querySelector('input[name="crossover_fraction"]'),
             ];
 
             onChange();
-            checkbox.addEventListener('change', onChange);
+            select.addEventListener('change', onChange);
 
             function onChange() {
                 for (var i = 0; i < relatedElements.length; ++i) {
                     var relatedElement = relatedElements[i];
-                    relatedElement.readOnly = !checkbox.checked;
+                    relatedElement.readOnly = (select.value !== '"partial"');
                 }
             }
         }

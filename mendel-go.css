@@ -57,6 +57,10 @@ body {
     text-align: right;
 }
 
+.form-row input[type=checkbox] {
+    margin-top: 0;
+}
+
 .form-row input.form-control:not([type=submit]):not([type=file]):not([type=reset]):not([readonly]) {
     background-color: #FFF !important;
 }

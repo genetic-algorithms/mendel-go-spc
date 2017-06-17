@@ -514,7 +514,6 @@
                 {'id': 'crossover_model',
                     'children': [
                         {'id': 'mean_num_crossovers'},
-                        {'id': 'crossover_fraction'},
                     ],
                 },
                 {'id': 'haploid_chromosome_number'},

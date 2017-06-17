@@ -41,7 +41,7 @@
         {
             "datasource": [
                 {
-                    "cols": "1:10",
+                    "cols": "1:9",
                     "data_def": "{label: \"fitness\", data: d1, lines: { show: true }, color: \"rgb(200,0,0)\"}",
                     "filename": "mendel.hst",
                     "label": "fitness",

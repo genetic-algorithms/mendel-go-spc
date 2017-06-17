@@ -171,7 +171,7 @@
             'type': {
                 'id': 'number',
                 'min': 2,
-                'max': 2000,
+                'max': 100000,
                 'step': 1,
             },
             'help': 'This is the number of reproducing adults, after selection. For parallel runs, this is the population size of each sub-population. This number is normally kept constant, except where fertility is insufficient to allow replacement, or where certain advanced parameters are used. For smaller computer systems such as PCs, population size must remain small (100-1000) or the program will quickly run out of memory. The default value is 1,000, since population sizes smaller than this can be strongly affected by inbreeding and drift. We find increasing population size beyond 1000 results in rapidly diminishing selective benefit.',
@@ -182,7 +182,7 @@
             'type': {
                 'id': 'number',
                 'min': 1,
-                'max': 20000,
+                'max': 100000,
                 'step': 1,
             },
             'help': 'The number of generations the program should run. The default is 500 generations. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual.',
@@ -193,8 +193,8 @@
             'type': {
                 'id': 'number',
                 'min': 0,
-                'max': 10000,
-                'step': 1,
+                'max': 1000,
+                'step': 'any',
             },
             'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human default value is 10 new mutations per individual per generation.',
         },
@@ -292,7 +292,7 @@
             'value': high_impact_mutn_threshold,
             'type': {
                 'id': 'number',
-                'min': 0.01,
+                'min': 0.0001,
                 'max': 0.9,
                 'step': 'any',
             },
@@ -337,7 +337,7 @@
             'value': dominant_hetero_expression,
             'type': {
                 'id': 'number',
-                'min': 0,
+                'min': 0.5,
                 'max': 1,
                 'step': 'any',
             },
@@ -385,7 +385,7 @@
             'type': {
                 'id': 'number',
                 'min': 1,
-                'max': 6,
+                'max': 25,
                 'step': 1,
             },
             'help': 'This is the number of offspring per reproducing individual. Since population size in Mendel is usually constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The default value for humans is two offspring per selected individual (or four offspring per reproducing female).',
@@ -415,23 +415,13 @@
             },
         },
         'mean_num_crossovers': {
-            'label': 'Mean number of crossovers',
+            'label': 'Mean crossovers per chromosome pair',
             'value': mean_num_crossovers,
             'type': {
                 'id': 'number',
-                'min': 1,
-                'max': 1000,
+                'min': 2,
+                'max': 100,
                 'step': 1,
-            },
-        },
-        'crossover_fraction': {
-            'label': 'Crossover fraction',
-            'value': crossover_fraction,
-            'type': {
-                'id': 'number',
-                'min': 0,
-                'max': 1,
-                'step': 'any',
             },
         },
         'haploid_chromosome_number': {
@@ -451,7 +441,7 @@
             'type': {
                 'id': 'number',
                 'min': 1,
-                'max': 10000,
+                'max': 100000,
                 'step': 1,
             },
             'help': 'Enter the number of linkage blocks. The number of linkage blocks should be an integer multiple of the number of chromosome (e.g. the default value of 989 is 43 times the default 23 chromosomes). MENDEL will automatically adjust to the nearest integer multiple (e.g. if you input 1000 and 23 chromosomes, MENDEL will use a value of 989).',

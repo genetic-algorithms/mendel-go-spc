@@ -1,5 +1,4 @@
 <%
-    import html
     from bottle import template
 
     def get_visible_field_ids(tabs):

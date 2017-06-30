@@ -1,173 +1,13 @@
-<%
-    from bottle import template
+# -*- coding: utf-8 -*-
 
-    def get_visible_field_ids(tabs):
-        visible_field_ids = []
-
-        for tab in tabs:
-            for field in tab['fields']:
-                visible_field_ids.append(field['id'])
-
-                if 'children' in field:
-                    for child in field['children']:
-                        visible_field_ids.append(child['id'])
-                    end
-                end
-            end
-        end
-
-        return visible_field_ids
-    end
-
-    def get_hidden_fields(tabs, params):
-        visible_field_ids = get_visible_field_ids(tabs)
-        hidden_fields = {}
-
-        for key, value in params.iteritems():
-            if not key in visible_field_ids:
-                hidden_fields[key] = value
-            end
-        end
-
-        return hidden_fields
-    end
-
-    def strip_quotes(s):
-        return s[1:-1]
-    end
-
-    def render_form_row(config_field, config_field_id, label_index):
-        template_str = u'''
-            <div class="form-row">
-                <label for="{{config_field_id}}" class="form-row__label">{{label_index}}. {{config_field['label']}}:</label>
-
-                <div class="form-row__widget">
-                    {{!widget}}
-                </div>
-
-                % if 'help' in config_field:
-                    <div class="form-row__help">
-                        <a class="form-help-popover"
-                            data-toggle="popover"
-                            data-trigger="focus"
-                            data-placement="bottom"
-                            tabindex="-1"
-                            role="button"
-                            title="{{config_field_id}}"
-                            data-content='{{config_field['help']}}
-                                % if 'more_help_url' in config_field:
-                                    <a href="{{config_field['more_help_url']}}" target="_blank">Read More</a>
-                                % end
-                            '>
-                            ?
-                        </a>
-                    </div>
-                % end
-            </div>
-        '''
-
-        template_kwargs = {
-            'config_field': config_field,
-            'config_field_id': config_field_id,
-            'label_index': label_index,
-            'widget': render_widget(config_field, config_field_id),
-        }
-
-        return template(template_str, **template_kwargs)
-    end
-
-    def render_widget(widget, widget_id):
-        if widget['type']['id'] == 'number':
-            return render_number_widget(widget, widget_id)
-        elif widget['type']['id'] == 'select':
-            return render_select_widget(widget, widget_id)
-        elif widget['type']['id'] == 'boolean':
-            return render_boolean_widget(widget, widget_id)
-        elif widget['type']['id'] == 'text':
-            return render_text_widget(widget, widget_id)
-        else:
-            return ''
-        end
-    end
-
-    def render_number_widget(widget, widget_id):
-        template_str = u'''
-            <div class="number-form-field">
-                <input class="form-control" id="{{id}}" type="number" name="{{id}}" value="{{value}}" min="{{min}}" max="{{max}}" step="{{step}}" />
-            </div>
-        '''
-
-        template_kwargs = {
-            'id': widget_id,
-            'value': widget['value'],
-            'min': widget['type']['min'],
-            'max': widget['type']['max'],
-            'step': widget['type']['step'],
-        }
-
-        return template(template_str, **template_kwargs)
-    end
-
-    def render_select_widget(widget, widget_id):
-        template_str = u'''
-            <div class="select-form-field">
-                <select class="form-control" id="{{id}}" name="{{id}}">
-                    % for choice_value, choice_title in choices:
-                        % if choice_value == value:
-                            <option value="{{choice_value}}" selected>{{choice_title}}</option>
-                        % else:
-                            <option value="{{choice_value}}">{{choice_title}}</option>
-                        % end
-                    % end
-                </select>
-            </div>
-        '''
-
-        template_kwargs = {
-            'id': widget_id,
-            'value': widget['value'],
-            'choices': widget['type']['choices'],
-        }
-
-        return template(template_str, **template_kwargs)
-    end
-
-    def render_boolean_widget(widget, widget_id):
-        template_str = u'''
-            <div class="boolean-form-field">
-                <input id="{{id}}" type="checkbox" name="{{id}}" {{checked}} />
-            </div>
-        '''
-
-        template_kwargs = {
-            'id': widget_id,
-            'checked': 'checked' if widget['value'] == 'true' else '',
-        }
-
-        return template(template_str, **template_kwargs)
-    end
-
-    def render_text_widget(widget, widget_id):
-        template_str = u'''
-            <div class="text-form-field">
-                <input class="text-form-field__visible form-control" id="{{id}}" type="text" value="{{value}}" />
-                <input class="text-form-field__hidden" type="hidden" name="{{id}}" />
-            </div>
-        '''
-
-        template_kwargs = {
-            'id': widget_id,
-            'value': strip_quotes(config_field['value']),
-        }
-
-        return template(template_str, **template_kwargs)
-    end
+from __future__ import unicode_literals
 
 
-    config_fields = {
+def get_config_fields(params):
+    return {
         'pop_size': {
             'label': 'Population size (per subpopulation)',
-            'value': pop_size,
+            'value': params['pop_size'],
             'type': {
                 'id': 'number',
                 'min': 2,
@@ -178,7 +18,7 @@
         },
         'num_generations': {
             'label': 'Generations',
-            'value': num_generations,
+            'value': params['num_generations'],
             'type': {
                 'id': 'number',
                 'min': 1,
@@ -189,7 +29,7 @@
         },
         'mutn_rate': {
             'label': 'Total non-neutral mutation rate (per individual per generation)',
-            'value': mutn_rate,
+            'value': params['mutn_rate'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -200,18 +40,18 @@
         },
         'mutn_rate_model': {
             'label': 'Mutation rate model',
-            'value': mutn_rate_model,
+            'value': params['mutn_rate_model'],
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('"fixed"', 'Fixed'),
-                    ('"poisson"', 'Poisson'),
+                    ('fixed', 'Fixed'),
+                    ('poisson', 'Poisson'),
                 ],
             },
         },
         'frac_fav_mutn': {
             'label': 'Beneficial/deleterious ratio within non-neutral mutations',
-            'value': frac_fav_mutn,
+            'value': params['frac_fav_mutn'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -222,7 +62,7 @@
         },
         'fraction_neutral': {
             'label': 'Fraction of genome which is non-functional (junk)',
-            'value': fraction_neutral,
+            'value': params['fraction_neutral'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -234,7 +74,7 @@
         },
         'genome_size': {
             'label': 'Functional genome size',
-            'value': genome_size,
+            'value': params['genome_size'],
             'type': {
                 'id': 'number',
                 'min': 100,
@@ -246,19 +86,19 @@
         },
         'fitness_effect_model': {
             'label': 'Fitness effect model',
-            'value': fitness_effect_model,
+            'value': params['fitness_effect_model'],
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('"fixed"', 'Fixed'),
-                    ('"uniform"', 'Uniform'),
-                    ('"weibull"', 'Weibull'),
+                    ('fixed', 'Fixed'),
+                    ('uniform', 'Uniform'),
+                    ('weibull', 'Weibull'),
                 ],
             },
         },
         'uniform_fitness_effect_del': {
             'label': 'Equal effect for each deleterious mutation',
-            'value': uniform_fitness_effect_del,
+            'value': params['uniform_fitness_effect_del'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -268,7 +108,7 @@
         },
         'uniform_fitness_effect_fav': {
             'label': 'Equal effect for each beneficial mutation',
-            'value': uniform_fitness_effect_fav,
+            'value': params['uniform_fitness_effect_fav'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -278,7 +118,7 @@
         },
         'high_impact_mutn_fraction': {
             'label': 'Fraction of deleterious mutations with “major effect”',
-            'value': high_impact_mutn_fraction,
+            'value': params['high_impact_mutn_fraction'],
             'type': {
                 'id': 'number',
                 'min': 0.0001,
@@ -289,7 +129,7 @@
         },
         'high_impact_mutn_threshold': {
             'label': 'Minimum deleterious effect defined as “major”',
-            'value': high_impact_mutn_threshold,
+            'value': params['high_impact_mutn_threshold'],
             'type': {
                 'id': 'number',
                 'min': 0.0001,
@@ -300,7 +140,7 @@
         },
         'max_fav_fitness_gain': {
             'label': 'Maximum beneficial fitness effect',
-            'value': max_fav_fitness_gain,
+            'value': params['max_fav_fitness_gain'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -312,7 +152,7 @@
         },
         'fraction_recessive': {
             'label': 'Fraction recessive (rest dominant)',
-            'value': fraction_recessive,
+            'value': params['fraction_recessive'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -323,7 +163,7 @@
         },
         'recessive_hetero_expression': {
             'label': 'Expression of recessive mutations (in heterozygote)',
-            'value': recessive_hetero_expression,
+            'value': params['recessive_hetero_expression'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -334,7 +174,7 @@
         },
         'dominant_hetero_expression': {
             'label': 'Expression of dominant mutations (in heterozygote)',
-            'value': dominant_hetero_expression,
+            'value': params['dominant_hetero_expression'],
             'type': {
                 'id': 'number',
                 'min': 0.5,
@@ -345,20 +185,20 @@
         },
         'selection_model': {
             'label': 'Selection model',
-            'value': selection_model,
+            'value': params['selection_model'],
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('"fulltrunc"', 'Full truncation'),
-                    ('"ups"', 'Unrestricted probability selection'),
-                    ('"spps"', 'Strict proportionality probability selection'),
-                    ('"partialtrunc"', 'Partial truncation selection'),
+                    ('fulltrunc', 'Full truncation'),
+                    ('ups', 'Unrestricted probability selection'),
+                    ('spps', 'Strict proportionality probability selection'),
+                    ('partialtrunc', 'Partial truncation selection'),
                 ],
             },
         },
         'heritability': {
             'label': 'Heritability',
-            'value': heritability,
+            'value': params['heritability'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -369,7 +209,7 @@
         },
         'non_scaling_noise': {
             'label': 'Non-scaling noise',
-            'value': non_scaling_noise,
+            'value': params['non_scaling_noise'],
             'type': {
                 'id': 'number',
                 'min': 0,
@@ -381,7 +221,7 @@
         },
         'reproductive_rate': {
             'label': 'Reproductive rate',
-            'value': reproductive_rate,
+            'value': params['reproductive_rate'],
             'type': {
                 'id': 'number',
                 'min': 1,
@@ -392,31 +232,31 @@
         },
         'num_offspring_model': {
             'label': 'Num offspring model',
-            'value': num_offspring_model,
+            'value': params['num_offspring_model'],
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('"uniform"', 'Uniform'),
-                    ('"fixed"', 'Fixed'),
-                    ('"fortran"', 'Fortran'),
+                    ('uniform', 'Uniform'),
+                    ('fixed', 'Fixed'),
+                    ('fortran', 'Fortran'),
                 ],
             },
         },
         'crossover_model': {
             'label': 'Crossover model',
-            'value': crossover_model,
+            'value': params['crossover_model'],
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('"none"', 'None'),
-                    ('"partial"', 'Partial'),
-                    ('"full"', 'Full'),
+                    ('none', 'None'),
+                    ('partial', 'Partial'),
+                    ('full', 'Full'),
                 ],
             },
         },
         'mean_num_crossovers': {
             'label': 'Mean crossovers per chromosome pair',
-            'value': mean_num_crossovers,
+            'value': params['mean_num_crossovers'],
             'type': {
                 'id': 'number',
                 'min': 2,
@@ -426,7 +266,7 @@
         },
         'haploid_chromosome_number': {
             'label': 'Haploid chromosome number',
-            'value': haploid_chromosome_number,
+            'value': params['haploid_chromosome_number'],
             'type': {
                 'id': 'number',
                 'min': 1,
@@ -437,7 +277,7 @@
         },
         'num_linkage_subunits': {
             'label': 'Number of linkage subunits',
-            'value': num_linkage_subunits,
+            'value': params['num_linkage_subunits'],
             'type': {
                 'id': 'number',
                 'min': 1,
@@ -448,7 +288,7 @@
         },
         'track_neutrals': {
             'label': 'Track all mutations',
-            'value': track_neutrals,
+            'value': params['track_neutrals'],
             'type': {
                 'id': 'boolean',
             },
@@ -456,7 +296,7 @@
         },
         'random_number_seed': {
             'label': 'Random number generator (RNG) seed',
-            'value': random_number_seed,
+            'value': params['random_number_seed'],
             'type': {
                 'id': 'number',
                 'min': -9223372036854775808,
@@ -467,7 +307,8 @@
         },
     }
 
-    config_tabs = [
+def get_config_tabs():
+    return [
         {
             'id': 'basic',
             'title': 'Basic',
@@ -529,94 +370,3 @@
             ],
         },
     ]
-%>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{title}}</title>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="/static/css/bootstrap-tagsinput.css" />
-    <link rel="stylesheet" href="/static/css/style-metro.css" />
-
-    <link rel="stylesheet" href="/static/apps/mendel-go/mendel-go.css" />
-</head>
-<body>
-    <div class="container-fluid">
-        %include('navbar')
-        %include('apps/alert')
-        <div id="memory" class="alert-info hidden-xs"></div>
-        <div id="danger" class="alert-danger"></div>
-        <div id="warning" class="alert-warning"></div>
-    </div>
-
-
-    <form class="mendel-input-form" name="mendel_input" method="post" action="/confirm">
-        <input type="hidden" name="app" value="{{app}}">
-        <input type="hidden" name="cid" value="{{cid}}">
-
-        % for name, value in get_hidden_fields(config_tabs, apps[app].params).iteritems():
-            <input type="hidden" name="{{name}}" value="{{value}}" />
-        % end
-
-        <a class="user-manual-link" href="/static/apps/mendel/help.html" target="_blank">User Manual</a>
-
-        <div class="page-width">
-            <div class="page-width__inner">
-                <div class="form-sections">
-                    % for i, config_tab in enumerate(config_tabs):
-                        <div class="form-section">
-                            <div class="form-section__title">{{config_tab['title']}}</div>
-                            <div class="form-section__fields">
-                                % for j, tab_field in enumerate(config_tab['fields']):
-                                    % config_field_id = tab_field['id']
-                                    % config_field = config_fields[config_field_id]
-
-                                    {{!render_form_row(config_field, config_field_id, unicode(j + 1))}}
-
-                                    <div class="form-child-rows">
-                                        % if 'children' in tab_field:
-                                            % for k, child in enumerate(tab_field['children']):
-                                                % config_field_id = child['id']
-                                                % config_field = config_fields[config_field_id]
-
-                                                {{!render_form_row(config_field, config_field_id, chr(97 + k))}}
-                                            % end
-                                        % end
-                                    </div>
-                                % end
-                            </div>
-                        </div>
-                    % end
-
-                    <div class="form-section">
-                        <div class="form-section__title">Job</div>
-                        <div class="form-section__fields">
-                            <div class="form-row">
-                                <div class="form-row__label">1. Tags:</div>
-                                <div class="form-row__widget">
-                                    <input class="form-control tags-input" type="text" id="desc" name="desc" data-role="tagsinput" placeholder="Enter tag…" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button class="form-submit-button btn btn-success" type="submit">Continue</button>
-            </div>
-        </div>
-    </form>
-
-    <script src="/static/jquery-2.1.4.min.js"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.highlight.js"></script>
-    <script src="/static/js/jquery.validate.min.js"></script>
-    <script src="/static/js/bootstrap-tagsinput.min.js"></script>
-    <script src="/static/js/bootstrap-notify.min.js"></script>
-
-    <script src="/static/apps/mendel-go/mendel-go.js"></script>
-</body>
-</html>

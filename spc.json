@@ -1,14 +1,14 @@
 {
     "assets": [
-        "mendel-go.css",
-        "mendel-go.js"
+        "mendel_go.css",
+        "mendel_go.js"
     ],
     "category": "",
-    "command": "../../../../apps/mendel-go/mendel-go -f mendel-go.ini",
+    "command": "../../../../src/spc_apps/mendel_go/mendel_go -f mendel_go.toml",
     "description": "Go version of Mendel's Accountant",
-    "input_format": "ini",
+    "input_format": "toml",
     "language": "",
-    "name": "mendel-go",
+    "name": "mendel_go",
     "plots": [
         {
             "datasource": [

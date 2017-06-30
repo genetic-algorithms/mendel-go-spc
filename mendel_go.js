@@ -1,6 +1,6 @@
 (function() {
     initPopover();
-    initTextFields();
+    initBooleanFields();
     initCustomRelations();
 
     function initPopover() {
@@ -10,22 +10,22 @@
         });
     }
 
-    function initTextFields() {
+    function initBooleanFields() {
         var form = document.querySelector('.mendel-input-form');
-        var fields = form.querySelectorAll('.text-form-field');
+        var fields = form.querySelectorAll('.boolean-form-field');
 
         for (var i = 0; i < fields.length; ++i) {
             initField(form, fields[i]);
         }
 
         function initField(form, field) {
-            var visibleInput = field.querySelector('.text-form-field__visible');
-            var hiddenInput = field.querySelector('.text-form-field__hidden');
+            var checkboxInput = field.querySelector('.boolean-form-field__checkbox');
+            var hiddenInput = field.querySelector('.boolean-form-field__hidden');
 
             form.addEventListener('submit', onSubmit);
 
             function onSubmit() {
-                hiddenInput.value = '"' + visibleInput.value + '"';
+                hiddenInput.value = checkboxInput.checked ? 'True' : 'False';
             }
         }
     }

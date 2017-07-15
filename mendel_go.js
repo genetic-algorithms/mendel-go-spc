@@ -32,13 +32,13 @@
 
     function initCustomRelations() {
         crossoverModel();
+        trackNeutrals();
 
         function crossoverModel() {
             var select = document.querySelector('select[name="crossover_model"]');
 
             var relatedElements = [
                 document.querySelector('input[name="mean_num_crossovers"]'),
-                document.querySelector('input[name="crossover_fraction"]'),
             ];
 
             onChange();
@@ -48,6 +48,21 @@
                 for (var i = 0; i < relatedElements.length; ++i) {
                     var relatedElement = relatedElements[i];
                     relatedElement.readOnly = (select.value !== '"partial"');
+                }
+            }
+        }
+
+        function trackNeutrals() {
+            var zeroTrackingThreshold = document.querySelector('.zero-tracking-threshold');
+            var checkbox = document.getElementById('track_neutrals');
+
+            checkbox.addEventListener('change', onChange);
+
+            function onChange() {
+                if (checkbox.checked) {
+                    zeroTrackingThreshold.disabled = false;
+                } else {
+                    zeroTrackingThreshold.disabled = true;
                 }
             }
         }

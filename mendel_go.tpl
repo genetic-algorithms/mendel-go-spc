@@ -32,6 +32,7 @@
     <form class="mendel-input-form" name="mendel_input" method="post" action="/confirm">
         <input type="hidden" name="app" value="{{app}}">
         <input type="hidden" name="data_file_path" value="./">
+        <input class="zero-tracking-threshold" type="hidden" name="tracking_threshold" value="0" disabled />
 
         <a class="user-manual-link" href="/static/apps/mendel/help.html" target="_blank">User Manual</a>
 

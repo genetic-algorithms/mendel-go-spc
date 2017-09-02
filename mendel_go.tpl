@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>{{title}}</title>
+    <title>{{tab_title}}</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 

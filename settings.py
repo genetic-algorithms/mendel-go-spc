@@ -305,13 +305,40 @@ def get_config_fields(params):
             },
             'help': 'At several stages within the MENDEL program, a random number generator is required. When an experiment needs to be independently replicated, the “random number seed” must be changed. If this is not done, the second experiment will be an exact duplicate of the earlier run.',
         },
-        'files_to_output_optimized': {
-            'label': 'Only plot average fitness and alleles',
-            'value': False,
+        'plot_allele_gens': {
+            'label': 'Plot alleles every n generations',
+            'value': params['plot_allele_gens'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'A value of 0 means only plot alleles for the last generation.',
+        },
+        'files_to_output_fit': {
+            'label': 'mendel.fit',
+            'value': True,
             'type': {
                 'id': 'boolean',
             },
-            'help': 'By default, data for all plots is written to files. You can check this to forgo writing data for some plots in order to speed up the run. This is only necessary for very large runs.',
+            'help': 'This contains data needed for the "Fitness History" plot.',
+        },
+        'files_to_output_hst': {
+            'label': 'mendel.hst',
+            'value': True,
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'This contains data needed for the "Average Mutations/Individual" plot.',
+        },
+        'files_to_output_allele_bins': {
+            'label': 'allele-bins/',
+            'value': True,
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'This contains data needed for the "SNP Frequencies" and "Minor Allele Frequencies" plots.',
         },
     }
 
@@ -370,12 +397,21 @@ def get_config_tabs():
             ],
         },
         {
+            'id': 'output_files',
+            'title': 'Output Files',
+            'fields': [
+                {'id': 'files_to_output_fit'},
+                {'id': 'files_to_output_hst'},
+                {'id': 'files_to_output_allele_bins'},
+            ],
+        },
+        {
             'id': 'computation',
             'title': 'Computation',
             'fields': [
                 {'id': 'track_neutrals'},
                 {'id': 'random_number_seed'},
-                {'id': 'files_to_output_optimized'},
+                {'id': 'plot_allele_gens'},
             ],
         },
     ]

@@ -33,7 +33,7 @@
     function initCustomRelations() {
         crossoverModel();
         trackNeutrals();
-        filesToOutputOptimized();
+        filesToOutput();
 
         function crossoverModel() {
             var select = document.querySelector('select[name="crossover_model"]');
@@ -68,19 +68,35 @@
             }
         }
 
-        function filesToOutputOptimized() {
+        function filesToOutput() {
             var hiddenInput = document.querySelector('input[name="files_to_output"]');
-            var checkbox = document.getElementById('files_to_output_optimized');
+            var fitCheckbox = document.getElementById('files_to_output_fit');
+            var hstCheckbox = document.getElementById('files_to_output_hst');
+            var alleleBinsCheckbox = document.getElementById('files_to_output_allele_bins');
 
             onChange();
-            checkbox.addEventListener('change', onChange);
+
+            fitCheckbox.addEventListener('change', onChange);
+            hstCheckbox.addEventListener('change', onChange);
+            alleleBinsCheckbox.addEventListener('change', onChange);
 
             function onChange() {
-                if (checkbox.checked) {
-                    hiddenInput.value = 'mendel.fit,allele-bins/,normalized-allele-bins/';
-                } else {
-                    hiddenInput.value = 'mendel.fit,allele-bins/,normalized-allele-bins/,mendel.hst';
+                var outputFiles = [];
+
+                if (fitCheckbox.checked) {
+                    outputFiles.push('mendel.fit');
                 }
+
+                if (hstCheckbox.checked) {
+                    outputFiles.push('mendel.hst');
+                }
+
+                if (alleleBinsCheckbox.checked) {
+                    outputFiles.push('allele-bins/');
+                    outputFiles.push('normalized-allele-bins/');
+                }
+
+                hiddenInput.value = outputFiles.join(',');
             }
         }
     }

@@ -137,7 +137,7 @@ def render_boolean_widget(widget, widget_id):
 
     template_kwargs = {
         'id': widget_id,
-        'checked': 'checked' if widget['value'] == 'true' else '',
+        'checked': 'checked' if widget['value'] else '',
     }
 
     return template(template_str, **template_kwargs)

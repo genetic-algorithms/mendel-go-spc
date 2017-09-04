@@ -305,6 +305,14 @@ def get_config_fields(params):
             },
             'help': 'At several stages within the MENDEL program, a random number generator is required. When an experiment needs to be independently replicated, the “random number seed” must be changed. If this is not done, the second experiment will be an exact duplicate of the earlier run.',
         },
+        'files_to_output_optimized': {
+            'label': 'Only plot average fitness and alleles',
+            'value': False,
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'By default, data for all plots is written to files. You can check this to forgo writing data for some plots in order to speed up the run. This is only necessary for very large runs.',
+        },
     }
 
 def get_config_tabs():
@@ -367,6 +375,7 @@ def get_config_tabs():
             'fields': [
                 {'id': 'track_neutrals'},
                 {'id': 'random_number_seed'},
+                {'id': 'files_to_output_optimized'},
             ],
         },
     ]

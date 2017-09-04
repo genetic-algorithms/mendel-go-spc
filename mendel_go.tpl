@@ -33,6 +33,7 @@
         <input type="hidden" name="app" value="{{app}}">
         <input type="hidden" name="data_file_path" value="./">
         <input class="zero-tracking-threshold" type="hidden" name="tracking_threshold" value="0" disabled />
+        <input type="hidden" name="files_to_output" value="mendel.fit,mendel.hst,allele-bins/" />
 
         <a class="user-manual-link" href="/static/apps/mendel/help.html" target="_blank">User Manual</a>
 

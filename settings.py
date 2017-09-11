@@ -515,11 +515,11 @@ def get_config_fields(params):
         },
         'files_to_output_hst': {
             'label': 'mendel.hst',
-            'value': True,
+            'value': False,
             'type': {
                 'id': 'boolean',
             },
-            'help': 'This contains data needed for the "Average Mutations/Individual" plot.',
+            'help': 'This contains data needed for the "Average Mutations/Individual" plot, but takes longer for mendel-go to gather this data.',
         },
         'files_to_output_allele_bins': {
             'label': 'allele-bins/',

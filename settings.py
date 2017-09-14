@@ -14,18 +14,18 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'This is the number of reproducing adults, after selection. For parallel runs, this is the population size of each sub-population. This number is normally kept constant, except where fertility is insufficient to allow replacement, or where certain advanced parameters are used. For smaller computer systems such as PCs, population size must remain small (100-1000) or the program will quickly run out of memory. The default value is 1,000, since population sizes smaller than this can be strongly affected by inbreeding and drift. We find increasing population size beyond 1000 results in rapidly diminishing selective benefit.',
+            'help': 'This is the number of reproducing adults, after selection. For tribal runs, this is the population size of each sub-population. This number is normally kept constant, except where fertility is insufficient to allow replacement, or where certain advanced parameters for population growth are used. For smaller computer systems such as PCs, population size must remain small (100-1000) or the program will quickly run out of memory. The default value is 1,000, since population sizes smaller than this can be strongly affected by inbreeding and drift. We find increasing population size beyond 1000 results in rapidly diminishing selective benefit.',
         },
         'num_generations': {
             'label': 'Generations',
             'value': params['num_generations'],
             'type': {
                 'id': 'number',
-                'min': 1,
+                'min': 0,
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'The number of generations the program should run. The default is 500 generations. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual.',
+            'help': 'The number of generations the program should run. The default is 500 generations. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
         },
         'mutn_rate': {
             'label': 'Total non-neutral mutation rate (per individual per generation)',
@@ -36,7 +36,7 @@ def get_config_fields(params):
                 'max': 1000,
                 'step': 'any',
             },
-            'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human default value is 10 new mutations per individual per generation.',
+            'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), or if only 10% of the genome is modeled (as is the default), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human default value is 10 new mutations per individual per generation.',
         },
         'mutn_rate_model': {
             'label': 'Mutation rate model',
@@ -45,9 +45,10 @@ def get_config_fields(params):
                 'id': 'select',
                 'choices': [
                     ('fixed', 'Fixed'),
-                    ('poisson', 'Poisson'),
+                    ('poisson', 'Poisson (default)'),
                 ],
             },
+            'help': 'Choices: "poisson" - mutn_rate is determined by a poisson distribution, or "fixed" - mutn_rate is rounded to the nearest int',
         },
         'frac_fav_mutn': {
             'label': 'Beneficial/deleterious ratio within non-neutral mutations',
@@ -58,7 +59,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'While some sources suggest this number might be as high as 1:1000, most sources suggest it is more realistically about 1:1,000,000. The default setting is 1:10,000. For studying the accumulation of only deleterious or only beneficial mutations, the number of beneficials can be set to zero or one.',
+            'help': 'While some sources suggest this number might be as high as 1:1000, most sources suggest it is more realistically about 1:1,000,000. The default setting is 1:1,000. For studying the accumulation of only deleterious or only beneficial mutations, the number of beneficials can be set to zero or one.',
         },
         'fraction_neutral': {
             'label': 'Fraction of genome which is non-functional (junk)',
@@ -92,9 +93,10 @@ def get_config_fields(params):
                 'choices': [
                     ('fixed', 'Fixed'),
                     ('uniform', 'Uniform'),
-                    ('weibull', 'Weibull'),
+                    ('weibull', 'Weibull (default)'),
                 ],
             },
+            'help': 'Choices: "weibull" - the fitness effect of each mutation is determined by the Weibull distribution, "fixed" - use fixed values for mutation fitness effect as set in uniform_fitness_effect_*, or "uniform" - even distribution between 0 and uniform_fitness_effect_* as max.',
         },
         'uniform_fitness_effect_del': {
             'label': 'Equal effect for each deleterious mutation',
@@ -105,6 +107,7 @@ def get_config_fields(params):
                 'max': 0.1,
                 'step': 'any',
             },
+            'help': 'Used for fitness_effect_model=fixed. Each deleterious mutation should have this fitness effect.',
         },
         'uniform_fitness_effect_fav': {
             'label': 'Equal effect for each beneficial mutation',
@@ -115,6 +118,7 @@ def get_config_fields(params):
                 'max': 0.1,
                 'step': 'any',
             },
+            'help': 'Used for fitness_effect_model=fixed. Each beneficial mutation should have this fitness effect.',
         },
         'high_impact_mutn_fraction': {
             'label': 'Fraction of deleterious mutations with “major effect”',
@@ -191,7 +195,7 @@ def get_config_fields(params):
                 'choices': [
                     ('fulltrunc', 'Full truncation'),
                     ('ups', 'Unrestricted probability selection'),
-                    ('spps', 'Strict proportionality probability selection'),
+                    ('spps', 'Strict proportionality probability selection (default)'),
                     ('partialtrunc', 'Partial truncation selection'),
                 ],
             },
@@ -228,7 +232,7 @@ def get_config_fields(params):
                 'max': 25,
                 'step': 1,
             },
-            'help': 'This is the number of offspring per reproducing individual. Since population size in Mendel is usually constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The default value for humans is two offspring per selected individual (or four offspring per reproducing female).',
+            'help': 'This is the number of offspring per reproducing individual. When population size is constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The default value for humans is two offspring per selected individual (or four offspring per reproducing female).',
         },
         'num_offspring_model': {
             'label': 'Num offspring model',
@@ -237,10 +241,10 @@ def get_config_fields(params):
                 'id': 'select',
                 'choices': [
                     ('uniform', 'Uniform'),
-                    ('fixed', 'Fixed'),
-                    ('fortran', 'Fortran'),
+                    ('fixed', 'Fixed (default)'),
                 ],
             },
+            'help': 'Choices: "fixed" - reproductive_rate rounded to the nearest integer, or "uniform" - an even distribution such that the mean is reproductive_rate',
         },
         'crossover_model': {
             'label': 'Crossover model',
@@ -249,20 +253,22 @@ def get_config_fields(params):
                 'id': 'select',
                 'choices': [
                     ('none', 'None'),
-                    ('partial', 'Partial'),
+                    ('partial', 'Partial (default)'),
                     ('full', 'Full'),
                 ],
             },
+            'help': 'Choices: "partial" - mean_num_crossovers per chromosome pair, "none" - no crossover, or "full" - each LB has a 50/50 chance of coming from dad or mom',
         },
         'mean_num_crossovers': {
             'label': 'Mean crossovers per chromosome pair',
             'value': params['mean_num_crossovers'],
             'type': {
                 'id': 'number',
-                'min': 2,
+                'min': 0,
                 'max': 100,
                 'step': 1,
             },
+            'help': 'Used only for crossover_model=partial. The average number of crossovers per chromosome PAIR during Meiosis 1 Metaphase.',
         },
         'haploid_chromosome_number': {
             'label': 'Haploid chromosome number',
@@ -273,7 +279,7 @@ def get_config_fields(params):
                 'max': 100,
                 'step': 1,
             },
-            'help': 'The number of linkage blocks is evenly distributed over a user-specified haploid number of chromosomes (default=23).  If dynamic linkage is turned off, this number is not required and will be disabled.',
+            'help': 'The number of linkage blocks is evenly distributed over a user-specified haploid number of chromosomes (default=23).',
         },
         'num_linkage_subunits': {
             'label': 'Number of linkage subunits',
@@ -284,7 +290,141 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'Enter the number of linkage blocks. The number of linkage blocks should be an integer multiple of the number of chromosome (e.g. the default value of 989 is 43 times the default 23 chromosomes). MENDEL will automatically adjust to the nearest integer multiple (e.g. if you input 1000 and 23 chromosomes, MENDEL will use a value of 989).',
+            'help': 'The number of linkage blocks. The number of linkage blocks should be an integer multiple of the number of chromosome (e.g. the default value of 989 is 43 times the default 23 chromosomes).',
+        },
+        'num_contrasting_alleles': {
+            'label': 'Number of initial contrasting alleles',
+            'value': params['num_contrasting_alleles'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'Number of initial contrasting alleles (pairs) given to each individual. Used to start the population with pre-existing diversity.',
+        },
+        'initial_alleles_pop_frac': {
+            'label': 'Fraction of the population that should have initial alleles',
+            'value': params['initial_alleles_pop_frac'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 1.0,
+                'step': 'any',
+            },
+            'help': 'Used along with num_contrasting_alleles to set the fraction of the initial population that should have num_contrasting_alleles alleles',
+        },
+        'max_total_fitness_increase': {
+            'label': 'The total fitness effect of all of the favorable initial alleles in an individual',
+            'value': params['max_total_fitness_increase'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 1.0,
+                'step': 'any',
+            },
+            'help': 'Used along with num_contrasting_alleles to set the total fitness effect of all of the favorable initial alleles in an individual.',
+        },
+        'pop_growth_model': {
+            'label': 'Population growth model',
+            'value': params['pop_growth_model'],
+            'type': {
+                'id': 'select',
+                'choices': [
+                    ('none', 'None (default)'),
+                    ('exponential', 'Exponential'),
+                    ('capacity', 'Carrying capacity'),
+                    ('founders', 'Founders effect'),
+                ],
+            },
+            'help': 'Choices: "none" - no population growth, "exponential" - exponential growth model, "capacity" - carrying-capacity model, "founders" - founders effect',
+        },
+        'pop_growth_rate': {
+            'label': 'Population growth rate each generation',
+            'value': params['pop_growth_rate'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 10.0,
+                'step': 'any',
+            },
+            'help': 'Population growth rate each generation (e.g. 1.05 is 5% increase). Used for pop_growth_model==Exponential, Carrying capacity, and Founders effect.',
+        },
+        'pop_growth_rate2': {
+            'label': 'Population growth rate after the bottleneck',
+            'value': params['pop_growth_rate2'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 10.0,
+                'step': 'any',
+            },
+            'help': 'Population growth rate after the population bottleneck. Used for pop_growth_model==Founders effect.',
+        },
+        'max_pop_size': {
+            'label': 'Maximum population size',
+            'value': params['max_pop_size'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'The run will stop when this population size is reached or num_generations is reached, whichever comes first. Set to 0 for no max. Used for pop_growth_model==exponential.',
+        },
+        'carrying_capacity': {
+            'label': 'Population carrying capacity',
+            'value': params['carrying_capacity'],
+            'type': {
+                'id': 'number',
+                'min': 10,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'The limit that the population size should approach. Used for pop_growth_model==Carrying capacity and Founders effect.',
+            'more_help_url': 'https://en.wikipedia.org/wiki/Carrying_capacity',
+        },
+        'bottleneck_generation': {
+            'label': 'Generation number of a population bottleneck',
+            'value': params['bottleneck_generation'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'The generation number at which the population size bottleneck should start. Use 0 for no bottleneck. Currently only used for pop_growth_model==founders',
+        },
+        'bottleneck_pop_size': {
+            'label': 'The population size during the bottleneck',
+            'value': params['bottleneck_pop_size'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+        },
+        'num_bottleneck_generations': {
+            'label': 'The number of generations the bottleneck should last',
+            'value': params['num_bottleneck_generations'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+        },
+        'tracking_threshold': {
+            'label': 'Do not track mutations below this fitness effect',
+            'value': params['tracking_threshold'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 10.0,
+                'step': 'any',
+            },
+            'help': 'Below this fitness effect value, near neutral mutations will be pooled into the cumulative fitness of the LB, instead of tracked individually. This saves on memory and computation time, but some stats will not be available. This value is automatically set to a high value if allele output is not requested, because there is no benefit to tracking in that case.',
         },
         'track_neutrals': {
             'label': 'Track all mutations',
@@ -292,7 +432,18 @@ def get_config_fields(params):
             'type': {
                 'id': 'boolean',
             },
-            'help': 'Checking this box will set tracking threshold to zero, in which case all mutations will be tracked, including neutral mutations. This button must be checked if allele statistics are needed, or if neutral mutations are to be simulated.',
+            'help': 'Checking this box will cause Mendel to track neutral mutations as long as tracking_threshold is also set to 0.0. This button must be checked if neutral mutations are to be simulated.',
+        },
+        'num_threads': {
+            'label': 'Number of CPUs to use for the simulation',
+            'value': params['num_threads'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'The number of concurrent CPU threads that should be used in the simulation. If this is set to 0 is will automatically use all available CPUs.',
         },
         'random_number_seed': {
             'label': 'Random number generator (RNG) seed',
@@ -316,6 +467,44 @@ def get_config_fields(params):
             },
             'help': 'A value of 0 means only plot alleles for the last generation.',
         },
+        'verbosity': {
+            'label': 'The verbosity of the output',
+            'value': params['verbosity'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'A value of 1 is recommended. Higher values will output more information, but will also take longer to gather.',
+        },
+        'force_gc': {
+            'label': 'Force system garbage collection each generation',
+            'value': params['force_gc'],
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'Check this box to explicitly run Go garbage collection after mating each generation. (Otherwise Go decides when to run gargage collection.) Setting this can cut memory usage, sometimes as much as 40%, but it also increases the run time.',
+        },
+        'allele_count_gc_interval': {
+            'label': 'Explicitly run Go garbage collection during allele counting',
+            'value': params['allele_count_gc_interval'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 100000,
+                'step': 1,
+            },
+            'help': 'Set this to > 0 to explicitly call Go garbage after counting alleles from this many individuals. This helps memory not baloon right at the end of a long run, but will take a little longer.',
+        },
+        'reuse_populations': {
+            'label': 'Reuse internal code objects',
+            'value': params['reuse_populations'],
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'Check this box to have the code explicitly reuse internal objects. The will increase performance around 20% (depending on parameters), but will more than double the amount of memory used. This will be forced to false if population growth is specified',
+        },
         'files_to_output_fit': {
             'label': 'mendel.fit',
             'value': True,
@@ -326,11 +515,11 @@ def get_config_fields(params):
         },
         'files_to_output_hst': {
             'label': 'mendel.hst',
-            'value': True,
+            'value': False,
             'type': {
                 'id': 'boolean',
             },
-            'help': 'This contains data needed for the "Average Mutations/Individual" plot.',
+            'help': 'This contains data needed for the "Average Mutations/Individual" plot, but takes longer for mendel-go to gather this data.',
         },
         'files_to_output_allele_bins': {
             'label': 'allele-bins/',
@@ -357,13 +546,16 @@ def get_config_tabs():
             'title': 'Mutations',
             'fields': [
                 {'id': 'mutn_rate'},
+                {'id': 'genome_size'},
                 {'id': 'mutn_rate_model'},
                 {'id': 'frac_fav_mutn'},
                 {'id': 'fraction_neutral'},
-                {'id': 'genome_size'},
-                {'id': 'fitness_effect_model'},
-                {'id': 'uniform_fitness_effect_del'},
-                {'id': 'uniform_fitness_effect_fav'},
+                {'id': 'fitness_effect_model',
+                    'children': [
+                        {'id': 'uniform_fitness_effect_del'},
+                        {'id': 'uniform_fitness_effect_fav'},
+                    ],
+                },
                 {'id': 'high_impact_mutn_fraction'},
                 {'id': 'high_impact_mutn_threshold'},
                 {'id': 'max_fav_fitness_gain'},
@@ -394,6 +586,26 @@ def get_config_tabs():
                 },
                 {'id': 'haploid_chromosome_number'},
                 {'id': 'num_linkage_subunits'},
+                {'id': 'num_contrasting_alleles',
+                    'children': [
+                        {'id': 'initial_alleles_pop_frac'},
+                        {'id': 'max_total_fitness_increase'},
+                    ],
+                },
+                {'id': 'pop_growth_model',
+                    'children': [
+                        {'id': 'pop_growth_rate'},
+                        {'id': 'pop_growth_rate2'},
+                        {'id': 'max_pop_size'},
+                        {'id': 'carrying_capacity'},
+                    ],
+                },
+                {'id': 'bottleneck_generation',
+                    'children': [
+                        {'id': 'bottleneck_pop_size'},
+                        {'id': 'num_bottleneck_generations'},
+                    ],
+                },
             ],
         },
         {
@@ -409,9 +621,14 @@ def get_config_tabs():
             'id': 'computation',
             'title': 'Computation',
             'fields': [
+                {'id': 'tracking_threshold'},
                 {'id': 'track_neutrals'},
-                {'id': 'random_number_seed'},
                 {'id': 'plot_allele_gens'},
+                {'id': 'random_number_seed'},
+                {'id': 'verbosity'},
+                {'id': 'force_gc'},
+                {'id': 'allele_count_gc_interval'},
+                {'id': 'reuse_populations'},
             ],
         },
     ]

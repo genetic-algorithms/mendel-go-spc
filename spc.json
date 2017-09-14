@@ -162,7 +162,9 @@
                     "yaxes": [
                         {
                             "axisLabel": "Proportion of SNPs",
-                            "axisLabelFontSizePixels": 12
+                            "axisLabelFontSizePixels": 12,
+                            "min": 0,
+                            "max": 1
                         }
                     ],
                     "legend": {

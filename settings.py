@@ -62,7 +62,7 @@ def get_config_fields(params):
             'help': 'While some sources suggest this number might be as high as 1:1000, most sources suggest it is more realistically about 1:1,000,000. The default setting is 1:1,000. For studying the accumulation of only deleterious or only beneficial mutations, the number of beneficials can be set to zero or one.',
         },
         'fraction_neutral': {
-            'label': 'Fraction of genome which is non-functional (junk)',
+            'label': 'Fraction of the total number of mutations that are perfectly neutral',
             'value': params['fraction_neutral'],
             'type': {
                 'id': 'number',

@@ -125,7 +125,7 @@ def get_config_fields(params):
             'value': params['high_impact_mutn_fraction'],
             'type': {
                 'id': 'number',
-                'min': 0.0001,
+                'min': 0.000000001,
                 'max': 0.9,
                 'step': 'any',
             },

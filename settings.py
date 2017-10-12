@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 def get_config_fields(params):
     return {
         'pop_size': {
-            'label': 'Population size (per subpopulation)',
+            'label': 'Population size (initial or fixed)',
             'value': params['pop_size'],
             'type': {
                 'id': 'number',
@@ -14,7 +14,7 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'This is the number of reproducing adults, after selection. For tribal runs, this is the population size of each sub-population. This number is normally kept constant, except where fertility is insufficient to allow replacement, or where certain advanced parameters for population growth are used. For smaller computer systems such as PCs, population size must remain small (100-1000) or the program will quickly run out of memory. The default value is 1,000, since population sizes smaller than this can be strongly affected by inbreeding and drift. We find increasing population size beyond 1000 results in rapidly diminishing selective benefit.',
+            'help': 'This is the number of reproducing adults, after selection. This number is normally kept constant, except when fertility is insufficient to allow replacement, or when population growth is specified below. For smaller computer systems such as PCs, population size must remain small (100-5000) or the program will run out of memory. Population sizes smaller than 1000 can be strongly affected by inbreeding and drift.',
         },
         'num_generations': {
             'label': 'Generations',
@@ -25,7 +25,7 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'The number of generations the program should run. The default is 500 generations. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
+            'help': 'The number of generations the program should run. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
         },
         'mutn_rate': {
             'label': 'Total non-neutral mutation rate (per individual per generation)',
@@ -36,7 +36,7 @@ def get_config_fields(params):
                 'max': 1000,
                 'step': 'any',
             },
-            'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), or if only 10% of the genome is modeled (as is the default), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human default value is 10 new mutations per individual per generation.',
+            'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), or if only 10% of the genome is modeled (as is the default), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human value is approximately 10 new mutations per individual per generation.',
         },
         'mutn_rate_model': {
             'label': 'Mutation rate model',
@@ -59,7 +59,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'While some sources suggest this number might be as high as 1:1000, most sources suggest it is more realistically about 1:1,000,000. The default setting is 1:1,000. For studying the accumulation of only deleterious or only beneficial mutations, the number of beneficials can be set to zero or one.',
+            'help': 'While some sources suggest this number might be as high as 1:1000, most sources suggest it is more realistically about 1:1,000,000. For studying the accumulation of only deleterious or only beneficial mutations, the fraction of beneficials can be set to zero or 1.',
         },
         'fraction_neutral': {
             'label': 'Fraction of the total number of mutations that are perfectly neutral',
@@ -70,7 +70,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'It is not clear that any mutations are perfectly neutral, but in the past it has often been claimed that most of the human genome is non-function “junk DNA”, and that mutations in these regions are truly neutral. For the human default, we allow (but do not believe) that 90% of the genome is junk DNA, and so 90% of all human mutations have absolutely no biological effect. Because of the computational cost of tracking so many neutral mutations we specify zero neutrals be simulated, and discount the mutation rate so it only reflects non-neutral mutations (see above).',
+            'help': 'It is not clear that any mutations are perfectly neutral, but in the past it has often been claimed that most of the human genome is non-function “junk DNA”, and that mutations in these regions are truly neutral. For the human default, we allow (but do not believe) that 90% of the genome is junk DNA, and so 90% of all human mutations have absolutely no biological effect. Because of the computational cost of tracking so many neutral mutations we specify zero neutrals be simulated, and discount the genome size so it only reflects non-neutral mutations.',
             'more_help_url': '/static/apps/mendel/help.html#fmun',
         },
         'genome_size': {
@@ -99,7 +99,7 @@ def get_config_fields(params):
             'help': 'Choices: "weibull" - the fitness effect of each mutation is determined by the Weibull distribution, "fixed" - use fixed values for mutation fitness effect as set in uniform_fitness_effect_*, or "uniform" - even distribution between 0 and uniform_fitness_effect_* as max.',
         },
         'uniform_fitness_effect_del': {
-            'label': 'Equal effect for each deleterious mutation',
+            'label': 'For Fixed: effect for each deleterious mutation',
             'value': params['uniform_fitness_effect_del'],
             'type': {
                 'id': 'number',
@@ -110,7 +110,7 @@ def get_config_fields(params):
             'help': 'Used for fitness_effect_model=fixed. Each deleterious mutation should have this fitness effect.',
         },
         'uniform_fitness_effect_fav': {
-            'label': 'Equal effect for each beneficial mutation',
+            'label': 'For Fixed: effect for each beneficial mutation',
             'value': params['uniform_fitness_effect_fav'],
             'type': {
                 'id': 'number',
@@ -174,7 +174,7 @@ def get_config_fields(params):
                 'max': 0.5,
                 'step': 'any',
             },
-            'help': 'It is widely believed that recessive mutations are not completely silent in the heterozygous condition, but are still expressed at some low level. Although the co-dominance default is 0.5 expression, a reasonable setting would be 0.05.',
+            'help': 'It is widely believed that recessive mutations are not completely silent in the heterozygous condition, but are still expressed at some low level. Although the co-dominance value is 0.5 expression, a reasonable setting would be 0.05.',
         },
         'dominant_hetero_expression': {
             'label': 'Expression of dominant mutations (in heterozygote)',
@@ -185,7 +185,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'It is widely believed that dominant mutations are not completely dominant in the heterozygous condition, but are only expressed only at some very high level. Although the co-dominance default is 0.5, a reasonable setting would be 0.95.',
+            'help': 'It is widely believed that dominant mutations are not completely dominant in the heterozygous condition, but are only expressed only at some very high level. Although the co-dominance value is 0.5, a reasonable setting would be 0.95.',
         },
         'selection_model': {
             'label': 'Selection model',
@@ -209,7 +209,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'Because a large part of phenotypic performance is affected by an individual’s circumstances (the “environment”), selection in nature is less effective than would be predicted simply from genotypic fitness values. Non-heritable environmental effects on phenotypic performance must be modeled realistically. MENDEL’s default value for the heritability is 0.2. This implies that on average, only 20% of an individual’s phenotypic performance is passed on to the next generation, with the rest being due to non-heritable factors. For a very general character such as reproductive fitness, 0.2 is an extremely generous heritability value. In most field contexts, it is in fact usually lower than this, typically being below the limit of detection.',
+            'help': 'Because a large part of phenotypic performance is affected by an individual’s circumstances (the “environment”), selection in nature is less effective than would be predicted simply from genotypic fitness values. Non-heritable environmental effects on phenotypic performance must be modeled realistically. A heritability value of 0.2 implies that on average, only 20% of an individual’s phenotypic performance is passed on to the next generation, with the rest being due to non-heritable factors. For a very general character such as reproductive fitness, 0.2 is an extremely generous heritability value. In most field contexts, it is in fact usually lower than this, typically being below the limit of detection.',
         },
         'non_scaling_noise': {
             'label': 'Non-scaling noise',
@@ -220,7 +220,7 @@ def get_config_fields(params):
                 'max': 1,
                 'step': 'any',
             },
-            'help': 'If a population’s fitness is increasing or declining, heritability (as calculated in the normal way), tends to scale with fitness, and so the implied “environmental noise” diminishes or increases as fitness diminishes or increases. This seems counter-intuitive. Also, with truncation selection, phenotypic variance becomes un-naturally small. For these reasons, it is desirable to model a component of environmental noise that does not scale with fitness variation. The units for this non-scaling noise parameter are based upon standard deviations from the initial fitness of 1.0. For simplicity, the default value is 0.05, but reasonable values probably exceed 0.01 and might exceed 0.1.',
+            'help': 'If a population’s fitness is increasing or declining, heritability (as calculated in the normal way), tends to scale with fitness, and so the implied “environmental noise” diminishes or increases as fitness diminishes or increases. This seems counter-intuitive. Also, with truncation selection, phenotypic variance becomes un-naturally small. For these reasons, it is desirable to model a component of environmental noise that does not scale with fitness variation. The units for this non-scaling noise parameter are based upon standard deviations from the initial fitness of 1.0. For simplicity, a reasonable value is 0.05, but reasonable values probably exceed 0.01 and might exceed 0.1.',
             'more_help_url': '/static/apps/mendel/help.html#nsn',
         },
         'reproductive_rate': {
@@ -232,7 +232,7 @@ def get_config_fields(params):
                 'max': 25,
                 'step': 1,
             },
-            'help': 'This is the number of offspring per reproducing individual. When population size is constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The default value for humans is two offspring per selected individual (or four offspring per reproducing female).',
+            'help': 'This is the number of offspring per reproducing individual. When population size is constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The typical value for humans is two offspring per selected individual (or four offspring per reproducing female).',
         },
         'num_offspring_model': {
             'label': 'Num offspring model',
@@ -260,7 +260,7 @@ def get_config_fields(params):
             'help': 'Choices: "partial" - mean_num_crossovers per chromosome pair, "none" - no crossover, or "full" - each LB has a 50/50 chance of coming from dad or mom',
         },
         'mean_num_crossovers': {
-            'label': 'Mean crossovers per chromosome pair',
+            'label': 'For Partial: Mean crossovers per chromosome pair',
             'value': params['mean_num_crossovers'],
             'type': {
                 'id': 'number',
@@ -282,7 +282,7 @@ def get_config_fields(params):
             'help': 'The number of linkage blocks is evenly distributed over a user-specified haploid number of chromosomes (default=23).',
         },
         'num_linkage_subunits': {
-            'label': 'Number of linkage subunits',
+            'label': 'Number of linkage subunits per individual',
             'value': params['num_linkage_subunits'],
             'type': {
                 'id': 'number',
@@ -293,7 +293,7 @@ def get_config_fields(params):
             'help': 'The number of linkage blocks. The number of linkage blocks should be an integer multiple of the number of chromosome (e.g. the default value of 989 is 43 times the default 23 chromosomes).',
         },
         'num_contrasting_alleles': {
-            'label': 'Number of initial contrasting alleles',
+            'label': 'Number of initial contrasting alleles per individual',
             'value': params['num_contrasting_alleles'],
             'type': {
                 'id': 'number',
@@ -351,7 +351,7 @@ def get_config_fields(params):
             'help': 'Population growth rate each generation (e.g. 1.05 is 5% increase). Used for pop_growth_model==Exponential, Carrying capacity, and Founders effect.',
         },
         'pop_growth_rate2': {
-            'label': 'Population growth rate after the bottleneck',
+            'label': 'For Founders: Population growth rate after the bottleneck',
             'value': params['pop_growth_rate2'],
             'type': {
                 'id': 'number',
@@ -362,7 +362,7 @@ def get_config_fields(params):
             'help': 'Population growth rate after the population bottleneck. Used for pop_growth_model==Founders effect.',
         },
         'max_pop_size': {
-            'label': 'Maximum population size',
+            'label': 'For Exponential: Maximum population size',
             'value': params['max_pop_size'],
             'type': {
                 'id': 'number',
@@ -427,7 +427,7 @@ def get_config_fields(params):
             'help': 'Below this fitness effect value, near neutral mutations will be pooled into the cumulative fitness of the LB, instead of tracked individually. This saves on memory and computation time, but some stats will not be available. This value is automatically set to a high value if allele output is not requested, because there is no benefit to tracking in that case.',
         },
         'track_neutrals': {
-            'label': 'Track all mutations',
+            'label': 'Track neutral mutations',
             'value': params['track_neutrals'],
             'type': {
                 'id': 'boolean',
@@ -443,7 +443,7 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'The number of concurrent CPU threads that should be used in the simulation. If this is set to 0 is will automatically use all available CPUs.',
+            'help': 'The number of concurrent CPU threads that should be used in the simulation. If this is set to 0 (recommended) it will automatically use all available CPUs.',
         },
         'random_number_seed': {
             'label': 'Random number generator (RNG) seed',
@@ -467,6 +467,14 @@ def get_config_fields(params):
             },
             'help': 'A value of 0 means only plot alleles for the last generation.',
         },
+        'omit_first_allele_bin': {
+            'label': 'Omit the 1st allele bin',
+            'value': params['omit_first_allele_bin'],
+            'type': {
+                'id': 'boolean',
+            },
+            'help': 'If checked, do not output the 0-1% allele bin for allele plots. This is consistent with the way most geneticists plot this data.',
+        },
         'verbosity': {
             'label': 'The verbosity of the output',
             'value': params['verbosity'],
@@ -487,7 +495,7 @@ def get_config_fields(params):
             'help': 'Check this box to explicitly run Go garbage collection after mating each generation. (Otherwise Go decides when to run gargage collection.) Setting this can cut memory usage, sometimes as much as 40%, but it also increases the run time.',
         },
         'allele_count_gc_interval': {
-            'label': 'Explicitly run Go garbage collection during allele counting',
+            'label': 'Run Go garbage collection during allele counting after this %',
             'value': params['allele_count_gc_interval'],
             'type': {
                 'id': 'number',
@@ -495,7 +503,7 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'Set this to > 0 to explicitly call Go garbage after counting alleles from this many individuals. This helps memory not baloon right at the end of a long run, but will take a little longer.',
+            'help': 'if 0 < n < 100 explicitly call Go garbage collection after counting this percent of individuals (with a min bound of 100 individuals and max bound of 500), or if n >= 100 call GC after counting alleles from this many individuals. This helps memory not balloon right at the end of a long run, but will take a little longer.',
         },
         'reuse_populations': {
             'label': 'Reuse internal code objects',
@@ -503,7 +511,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'boolean',
             },
-            'help': 'Check this box to have the code explicitly reuse internal objects. The will increase performance around 20% (depending on parameters), but will more than double the amount of memory used. This will be forced to false if population growth is specified',
+            'help': 'Check this box to have the code explicitly reuse internal objects. The will increase performance around 20% (depending on parameters), but will more than double the amount of memory used. This will be forced to false if population growth is specified (because that combination is not supported yet).',
         },
         'files_to_output_fit': {
             'label': 'mendel.fit',
@@ -515,11 +523,11 @@ def get_config_fields(params):
         },
         'files_to_output_hst': {
             'label': 'mendel.hst',
-            'value': False,
+            'value': True,
             'type': {
                 'id': 'boolean',
             },
-            'help': 'This contains data needed for the "Average Mutations/Individual" plot, but takes longer for mendel-go to gather this data.',
+            'help': 'This contains data needed for the "Average Mutations/Individual" plot.',
         },
         'files_to_output_allele_bins': {
             'label': 'allele-bins/',
@@ -624,8 +632,10 @@ def get_config_tabs():
                 {'id': 'tracking_threshold'},
                 {'id': 'track_neutrals'},
                 {'id': 'plot_allele_gens'},
+                {'id': 'omit_first_allele_bin'},
                 {'id': 'random_number_seed'},
                 {'id': 'verbosity'},
+                {'id': 'num_threads'},
                 {'id': 'force_gc'},
                 {'id': 'allele_count_gc_interval'},
                 {'id': 'reuse_populations'},

@@ -28,7 +28,7 @@ def get_config_fields(params):
             'help': 'The number of generations the program should run. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
         },
         'mutn_rate': {
-            'label': 'Total non-neutral mutation rate (per individual per generation)',
+            'label': 'Total mutation rate (per individual per generation)',
             'value': params['mutn_rate'],
             'type': {
                 'id': 'number',
@@ -36,7 +36,7 @@ def get_config_fields(params):
                 'max': 1000,
                 'step': 'any',
             },
-            'help': 'This is the average number of new mutations per individual. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), or if only 10% of the genome is modeled (as is the default), then the biologically relevant mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed—including zero. The human value is approximately 10 new mutations per individual per generation.',
+            'help': 'This is the average number of new mutations per individual per generation. In humans, this number is believed to be approximately 100. The mutation rate can be adjusted to be proportional to the size of the functional genome. Thus if only 10% of the human genome actually functions (assuming the rest to be biologically inert), or if only 10% of the genome is modeled (as is the default), then the biologically relevant human mutation rate would be just 10. Rates of less than 1 new mutation per individual are allowed, including zero.',
         },
         'mutn_rate_model': {
             'label': 'Mutation rate model',

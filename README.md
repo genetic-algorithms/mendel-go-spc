@@ -7,7 +7,7 @@ From the SPC repo directory, run:
 ./spc uninstall mendel_go
 
 # Install
-./spc install https://bitbucket.org/geneticentropy/mendel-go-spc/get/master.zip
+./spc install https://github.com/genetic-algorithms/mendel-go-spc/get/master.zip
 
 # Create symlinks to mendel-go binary and defaults file
 ln -s $MENDEL_GO_REPO/mendel-go ./src/spc_apps/mendel_go/mendel_go

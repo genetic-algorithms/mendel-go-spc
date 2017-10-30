@@ -93,18 +93,14 @@
                     }
                 ],
                 "flot_options": {
-                    "xaxes": [
-                        {
-                            "axisLabel": "SNP Frequencies",
-                            "axisLabelFontSizePixels": 12
-                        }
-                    ],
-                    "yaxes": [
-                        {
-                            "axisLabel": "Number of Alleles",
-                            "axisLabelFontSizePixels": 12
-                        }
-                    ],
+                    "xaxis": {
+                        "axisLabel": "SNP Frequencies",
+                        "axisLabelFontSizePixels": 12
+                    },
+                    "yaxes": {
+                        "axisLabel": "Number of Alleles",
+                        "axisLabelFontSizePixels": 12
+                    },
                     "legend": {
                         "position": "ne"
                     },
@@ -115,6 +111,9 @@
                             "lineWidth": 0,
                             "barWidth": 0.9
                         }
+                    },
+                    "selection": {
+                        "mode": "xy"
                     }
                 }
             }
@@ -153,20 +152,14 @@
                     }
                 ],
                 "flot_options": {
-                    "xaxes": [
-                        {
-                            "axisLabel": "Mean Minor Allele Frequency",
-                            "axisLabelFontSizePixels": 12
-                        }
-                    ],
-                    "yaxes": [
-                        {
-                            "axisLabel": "Proportion of SNPs",
-                            "axisLabelFontSizePixels": 12,
-                            "min": 0,
-                            "max": 1
-                        }
-                    ],
+                    "xaxis": {
+                        "axisLabel": "Mean Minor Allele Frequency",
+                        "axisLabelFontSizePixels": 12
+                    },
+                    "yaxis": {
+                        "axisLabel": "Proportion of SNPs",
+                        "axisLabelFontSizePixels": 12
+                    },
                     "legend": {
                         "position": "ne"
                     },
@@ -177,6 +170,9 @@
                             "lineWidth": 0,
                             "barWidth": 0.009
                         }
+                    },
+                    "selection": {
+                        "mode": "xy"
                     }
                 }
             }

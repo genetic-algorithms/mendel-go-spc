@@ -48,7 +48,7 @@
             function onChange() {
                 for (var i = 0; i < relatedElements.length; ++i) {
                     var relatedElement = relatedElements[i];
-                    relatedElement.readOnly = (select.value !== '"partial"');
+                    relatedElement.readOnly = (select.value !== 'partial');
                 }
             }
         }

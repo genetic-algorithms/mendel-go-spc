@@ -90,6 +90,22 @@
                             "label": "Neutral",
                             "color": "rgb(0, 0, 200)"
                         }
+                    },
+                    {
+                        "x_property": "bins",
+                        "y_property": "delInitialAlleles",
+                        "data_def": {
+                            "label": "Deleterious Initial",
+                            "color": "rgb(237, 158, 0)"
+                        }
+                    },
+                    {
+                        "x_property": "bins",
+                        "y_property": "favInitialAlleles",
+                        "data_def": {
+                            "label": "Favorable Initial",
+                            "color": "rgb(200, 0, 200)"
+                        }
                     }
                 ],
                 "flot_options": {
@@ -109,7 +125,8 @@
                         "bars": {
                             "show": true,
                             "lineWidth": 0,
-                            "barWidth": 0.9
+                            "barWidth": 0.9,
+                            "fill": 0.8
                         }
                     },
                     "selection": {
@@ -149,6 +166,22 @@
                             "label": "Neutral",
                             "color": "rgb(0, 0, 200)"
                         }
+                    },
+                    {
+                        "x_property": "bins",
+                        "y_property": "delInitialAlleles",
+                        "data_def": {
+                            "label": "Deleterious Initial",
+                            "color": "rgb(237, 158, 0)"
+                        }
+                    },
+                    {
+                        "x_property": "bins",
+                        "y_property": "favInitialAlleles",
+                        "data_def": {
+                            "label": "Favorable Initial",
+                            "color": "rgb(200, 0, 200)"
+                        }
                     }
                 ],
                 "flot_options": {
@@ -168,7 +201,8 @@
                         "bars": {
                             "show": true,
                             "lineWidth": 0,
-                            "barWidth": 0.009
+                            "barWidth": 0.009,
+                            "fill": 0.8
                         }
                     },
                     "selection": {

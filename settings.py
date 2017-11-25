@@ -513,14 +513,6 @@ def get_config_fields(params):
             },
             'help': 'if 0 < n < 100 explicitly call Go garbage collection after counting this percent of individuals (with a min bound of 100 individuals and max bound of 500), or if n >= 100 call GC after counting alleles from this many individuals. This helps memory not balloon right at the end of a long run, but will take a little longer.',
         },
-        'reuse_populations': {
-            'label': 'Reuse internal code objects',
-            'value': params['reuse_populations'],
-            'type': {
-                'id': 'boolean',
-            },
-            'help': 'Check this box to have the code explicitly reuse internal objects. The will increase performance around 20% (depending on parameters), but will more than double the amount of memory used. This will be forced to false if population growth is specified (because that combination is not supported yet).',
-        },
         'files_to_output_fit': {
             'label': 'mendel.fit',
             'value': True,
@@ -647,7 +639,6 @@ def get_config_tabs():
                 {'id': 'num_threads'},
                 {'id': 'force_gc'},
                 {'id': 'allele_count_gc_interval'},
-                {'id': 'reuse_populations'},
             ],
         },
     ]

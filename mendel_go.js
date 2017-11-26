@@ -2,6 +2,7 @@
     initPopover();
     initBooleanFields();
     initCustomRelations();
+    initImportSettings();
 
     function initPopover() {
         $('[data-toggle="popover"]').popover({
@@ -97,6 +98,73 @@
                 }
 
                 hiddenInput.value = outputFiles.join(',');
+            }
+        }
+    }
+
+    function initImportSettings() {
+        var button = document.querySelector('.import-export-section .import-button');
+        var mainForm = document.querySelector('.mendel-input-form');
+        var form = document.querySelector('.import-form');
+        var input = form.querySelector('input');
+
+        button.addEventListener('click', onButtonClick);
+        input.addEventListener('change', onInputChange);
+
+        function onButtonClick() {
+            input.click();
+        }
+
+        function onInputChange() {
+            var f = input.files[0];
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var text = e.target.result;
+                input.value = '';
+                var data = toml.parse(text);
+
+                var groupKeys = Object.keys(data);
+                groupKeys.forEach(function(groupKey) {
+                    var groupValue = data[groupKey];
+
+                    var keys = Object.keys(groupValue);
+                    keys.forEach(function(key) {
+                        var value = groupValue[key];
+                        importItem(key, value);
+                    });
+                });
+            };
+            reader.readAsText(f);
+        }
+
+        function importItem(key, value) {
+            if (key === 'files_to_output') {
+                var fileNames = value.split(',');
+
+                var fitCheckbox = document.getElementById('files_to_output_fit');
+                var hstCheckbox = document.getElementById('files_to_output_hst');
+                var alleleBinsCheckbox = document.getElementById('files_to_output_allele_bins');
+
+                fitCheckbox.checked = fileNames.indexOf('mendel.fit') >= 0;
+                hstCheckbox.checked = fileNames.indexOf('mendel.hst') >= 0;
+                alleleBinsCheckbox.checked = fileNames.indexOf('allele-bins/') >= 0;
+
+                fitCheckbox.dispatchEvent(new Event('change'));
+                hstCheckbox.dispatchEvent(new Event('change'));
+                alleleBinsCheckbox.dispatchEvent(new Event('change'));
+            } else {
+                var input = mainForm.querySelector('input[name="' + key + '"], select[name="' + key + '"]');
+
+                if (input) {
+                    if (input.parentNode.classList.contains('boolean-form-field')) {
+                        var checkbox = input.parentNode.querySelector('.boolean-form-field__checkbox');
+                        checkbox.checked = value;
+                        checkbox.dispatchEvent(new Event('change'));
+                    } else {
+                        input.value = value;
+                        input.dispatchEvent(new Event('change'));
+                    }
+                }
             }
         }
     }

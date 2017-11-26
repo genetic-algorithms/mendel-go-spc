@@ -40,6 +40,13 @@
         <div class="page-width">
             <div class="page-width__inner">
                 <div class="form-sections">
+                    <div class="form-section import-export-section">
+                        <div class="form-section__title">Import/Export Settings</div>
+                        <div class="form-section__fields">
+                            <div class="import-button btn btn-default">Import</div>
+                        </div>
+                    </div>
+
                     % for i, config_tab in enumerate(config_tabs):
                         <div class="form-section">
                             <div class="form-section__title">{{config_tab['title']}}</div>
@@ -83,6 +90,10 @@
         </div>
     </form>
 
+    <form class="import-form">
+        <input type="file" />
+    </form>
+
     <script src="/static/jquery-2.1.4.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
     <script src="/static/js/jquery.highlight.js"></script>
@@ -90,6 +101,7 @@
     <script src="/static/js/bootstrap-tagsinput.min.js"></script>
     <script src="/static/js/bootstrap-notify.min.js"></script>
 
+    <script src="/static/apps/mendel_go/toml.min.js"></script>
     <script src="/static/apps/mendel_go/mendel_go.js"></script>
 </body>
 </html>

@@ -112,3 +112,13 @@ body {
     display: inline-block;
     vertical-align: top;
 }
+
+/* Import/export settings */
+    .import-form {
+        display: none;
+    }
+
+    .import-export-section .import-button {
+        padding: 10px 18px;
+        font-size: 12px;
+    }

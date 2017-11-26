@@ -1,4 +1,5 @@
 <%
+    import json
     from spc_apps.mendel_go.settings import get_config_fields, get_config_tabs
     from spc_apps.mendel_go.util import get_hidden_fields, render_form_row
 
@@ -32,7 +33,6 @@
     <form class="mendel-input-form" name="mendel_input" method="post" action="/confirm">
         <input type="hidden" name="app" value="{{app}}">
         <input type="hidden" name="data_file_path" value="./">
-        <input class="zero-tracking-threshold" type="hidden" name="tracking_threshold" value="0" disabled />
         <input type="hidden" name="files_to_output" value="mendel.fit,mendel.hst,allele-bins/" />
 
         <a class="user-manual-link" href="/static/apps/mendel/help.html" target="_blank">User Manual</a>
@@ -43,7 +43,7 @@
                     <div class="form-section import-export-section">
                         <div class="form-section__title">Import/Export Settings</div>
                         <div class="form-section__fields">
-                            <div class="import-button btn btn-default">Import</div>
+                            <div class="import-button btn btn-default">Import</div><div class="export-button btn btn-default">Export</div>
                         </div>
                     </div>
 
@@ -93,6 +93,10 @@
     <form class="import-form">
         <input type="file" />
     </form>
+
+    <div class="js-data">
+        <div class="js-data__original-toml-dict">{{json.dumps(apps[app].original_toml_dict)}}</div>
+    </div>
 
     <script src="/static/jquery-2.1.4.min.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>

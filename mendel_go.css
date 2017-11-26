@@ -112,3 +112,21 @@ body {
     display: inline-block;
     vertical-align: top;
 }
+
+.js-data {
+    display: none;
+}
+
+.import-form {
+    display: none;
+}
+
+.import-export-section .import-button,
+.import-export-section .export-button {
+    padding: 10px 18px;
+    font-size: 12px;
+}
+
+.import-export-section .export-button {
+    margin-left: 10px;
+}

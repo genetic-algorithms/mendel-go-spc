@@ -1,6 +1,7 @@
 {
     "assets": [
         "mendel_go.css",
+        "toml.min.js",
         "mendel_go.js"
     ],
     "category": "",

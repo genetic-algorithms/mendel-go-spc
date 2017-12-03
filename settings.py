@@ -230,7 +230,7 @@ def get_config_fields(params):
                 'id': 'number',
                 'min': 1,
                 'max': 25,
-                'step': 1,
+                'step': 'any',
             },
             'help': 'This is the number of offspring per reproducing individual. When population size is constant, this variable defines the maximum amount of selection. There must be an average of at least one offspring per individual (after the selection process) for the population to maintain its size and avoid rapid extinction. Except where random death is considered, the entire surplus population is removed based upon phenotypic selection. The typical value for humans is two offspring per selected individual (or four offspring per reproducing female).',
         },

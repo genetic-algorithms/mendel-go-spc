@@ -25,7 +25,7 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
-            'help': 'The number of generations the program should run. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see advanced computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
+            'help': 'The number of generations the program should run. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
         },
         'mutn_rate': {
             'label': 'Total mutation rate (per individual per generation)',
@@ -434,6 +434,17 @@ def get_config_fields(params):
             },
             'help': 'Checking this box will cause Mendel to track neutral mutations as long as tracking_threshold is also set to 0.0. This button must be checked if neutral mutations are to be simulated.',
         },
+        'extinction_threshold': {
+            'label': 'End simulation if population fitness falls to this',
+            'value': params['extinction_threshold'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 1.0,
+                'step': 'any',
+            },
+            'help': 'If the mean fitness of the population falls to this value or below, it is considered mutational meltdown and the simulation is stopped.',
+        },
         'num_threads': {
             'label': 'Number of CPUs to use for the simulation',
             'value': params['num_threads'],
@@ -631,11 +642,18 @@ def get_config_tabs():
             'fields': [
                 {'id': 'tracking_threshold'},
                 {'id': 'track_neutrals'},
+                {'id': 'extinction_threshold'},
                 {'id': 'plot_allele_gens'},
                 {'id': 'omit_first_allele_bin'},
+                {'id': 'verbosity'},
+            ],
+        },
+        {
+            'id': 'advanced',
+            'title': 'Advanced Options',
+            'fields': [
                 {'id': 'count_duplicate_alleles'},
                 {'id': 'random_number_seed'},
-                {'id': 'verbosity'},
                 {'id': 'num_threads'},
                 {'id': 'force_gc'},
                 {'id': 'allele_count_gc_interval'},

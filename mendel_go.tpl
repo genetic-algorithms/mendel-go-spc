@@ -3,7 +3,7 @@
     from spc_apps.mendel_go.settings import get_config_fields, get_config_tabs
     from spc_apps.mendel_go.util import get_hidden_fields, render_form_row
 
-    config_fields = get_config_fields(apps[app].params)
+    config_fields = get_config_fields(locals())
     config_tabs = get_config_tabs()
 %>
 

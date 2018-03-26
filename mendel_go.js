@@ -56,12 +56,14 @@
 
         function filesToOutput() {
             var hiddenInput = document.querySelector('input[name="files_to_output"]');
+            var allCheckbox = document.getElementById('files_to_output_all');
             var fitCheckbox = document.getElementById('files_to_output_fit');
             var hstCheckbox = document.getElementById('files_to_output_hst');
             var alleleBinsCheckbox = document.getElementById('files_to_output_allele_bins');
 
             onChange();
 
+            allCheckbox.addEventListener('change', onChange);
             fitCheckbox.addEventListener('change', onChange);
             hstCheckbox.addEventListener('change', onChange);
             alleleBinsCheckbox.addEventListener('change', onChange);
@@ -69,17 +71,30 @@
             function onChange() {
                 var outputFiles = [];
 
-                if (fitCheckbox.checked) {
-                    outputFiles.push('mendel.fit');
-                }
+                if (allCheckbox.checked) {
+                    outputFiles.push('*');
 
-                if (hstCheckbox.checked) {
-                    outputFiles.push('mendel.hst');
-                }
+                    fitCheckbox.disabled = true;
+                    hstCheckbox.disabled = true;
+                    alleleBinsCheckbox.disabled = true;
+                } else {
+                    if (fitCheckbox.checked) {
+                        outputFiles.push('mendel.fit');
+                    }
 
-                if (alleleBinsCheckbox.checked) {
-                    outputFiles.push('allele-bins/');
-                    outputFiles.push('normalized-allele-bins/');
+                    if (hstCheckbox.checked) {
+                        outputFiles.push('mendel.hst');
+                    }
+
+                    if (alleleBinsCheckbox.checked) {
+                        outputFiles.push('allele-bins/');
+                        outputFiles.push('normalized-allele-bins/');
+                        outputFiles.push('allele-distribution/');
+                    }
+
+                    fitCheckbox.disabled = false;
+                    hstCheckbox.disabled = false;
+                    alleleBinsCheckbox.disabled = false;
                 }
 
                 hiddenInput.value = outputFiles.join(',');

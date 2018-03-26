@@ -12,6 +12,8 @@
     "name": "mendel_go",
     "plots": [
         {
+            "title": "Average mutations/individual",
+            "ptype": "flot-scatter",
             "datasource": [
                 {
                     "cols": "1:2",
@@ -35,11 +37,11 @@
                     "line_range": "2:10000"
                 }
             ],
-            "options": "legend: { position: 'nw' }, xaxis: { min: 1.0, axisLabel: 'Generations', axisLabelFontSizePixels: 12 }, yaxis: { axisLabel: 'Mutations', axisLabelFontSizePixels: 12 }, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }",
-            "ptype": "flot-scatter",
-            "title": "Average mutations/individual"
+            "options": "legend: { position: 'nw' }, xaxis: { min: 1.0, axisLabel: 'Generations', axisLabelFontSizePixels: 12 }, yaxis: { axisLabel: 'Mutations', axisLabelFontSizePixels: 12 }, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }"
         },
         {
+            "title": "Fitness history",
+            "ptype": "flot-scatter",
             "datasource": [
                 {
                     "cols": "1:4",
@@ -56,9 +58,134 @@
                     "line_range": "2:10000"
                 }
             ],
-            "options": "xaxes: [ { axisLabel: 'Generations', axisLabelFontSizePixels: 12 } ],  yaxes: [ { min: 0, axisLabel: 'Fitness', axisLabelFontSizePixels: 12 }, { position: 'right', min: 0, axisLabel: 'Population Size', axisLabelFontSizePixels: 12} ], legend: { position: 'se'}, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }",
-            "ptype": "flot-scatter",
-            "title": "Fitness history"
+            "options": "xaxes: [ { axisLabel: 'Generations', axisLabelFontSizePixels: 12 } ],  yaxes: [ { min: 0, axisLabel: 'Fitness', axisLabelFontSizePixels: 12 }, { position: 'right', min: 0, axisLabel: 'Population Size', axisLabelFontSizePixels: 12} ], legend: { position: 'se'}, grid: { hoverable: true, clickable: true }, selection: { mode: 'xy' }"
+        },
+        {
+            "title": "Distribution of accumulated mutations (deleterious)",
+            "ptype": "flot-3d",
+            "options": {
+                "directory": "allele-distribution-del",
+                "z_property": "generation",
+                "z_label": "Generation",
+                "datasources": [
+                    {
+                        "x_property": "binmidpointfitness",
+                        "y_property": "dominant",
+                        "data_def": {
+                            "label": "Dominant",
+                            "color": "rgb(0, 200, 0)"
+                        }
+                    },
+                    {
+                        "x_property": "binmidpointfitness",
+                        "y_property": "recessive",
+                        "data_def": {
+                            "label": "Recessive",
+                            "color": "rgb(200, 0, 0)"
+                        }
+                    }
+                ],
+                "flot_options": {
+                    "xaxis": {
+                        "axisLabel": "Mutational Fitness Degradation",
+                        "axisLabelFontSizePixels": 12,
+                        "ticks": [
+                            [1.0, "1"],
+                            [0.1, "1e-1"],
+                            [0.01, "1e-2"],
+                            [1e-3, "1e-3"],
+                            [1e-4, "1e-4"],
+                            [1e-5, "1e-5"],
+                            [1e-6, "1e-6"],
+                            [1e-7, "1e-7"],
+                            [1e-8, "1e-8"]
+                        ],
+                        "tickDecimals": 6,
+                        "max": 1
+                    },
+                    "yaxis": {
+                        "axisLabel": "Fraction of Mutations Retained in Genome",
+                        "axisLabelFontSizePixels": 12
+                    },
+                    "legend": {
+                        "position": "ne"
+                    },
+                    "series": {
+                        "stack": true,
+                        "bars": {
+                            "show": true,
+                            "autoWidth": true
+                        }
+                    },
+                    "selection": {
+                        "mode": "xy"
+                    }
+                },
+                "x_axis_scale": "negative_log"
+            }
+        },
+        {
+            "title": "Distribution of accumulated mutations (beneficial)",
+            "ptype": "flot-3d",
+            "options": {
+                "directory": "allele-distribution-fav",
+                "z_property": "generation",
+                "z_label": "Generation",
+                "datasources": [
+                    {
+                        "x_property": "binmidpointfitness",
+                        "y_property": "dominant",
+                        "data_def": {
+                            "label": "Dominant",
+                            "color": "rgb(0, 200, 0)"
+                        }
+                    },
+                    {
+                        "x_property": "binmidpointfitness",
+                        "y_property": "recessive",
+                        "data_def": {
+                            "label": "Recessive",
+                            "color": "rgb(200, 0, 0)"
+                        }
+                    }
+                ],
+                "flot_options": {
+                    "xaxis": {
+                        "axisLabel": "Mutational Fitness Enhancement",
+                        "axisLabelFontSizePixels": 12,
+                        "ticks": [
+                            [1.0, "1"],
+                            [0.1, "1e-1"],
+                            [0.01, "1e-2"],
+                            [1e-3, "1e-3"],
+                            [1e-4, "1e-4"],
+                            [1e-5, "1e-5"],
+                            [1e-6, "1e-6"],
+                            [1e-7, "1e-7"],
+                            [1e-8, "1e-8"]
+                        ],
+                        "tickDecimals": 6
+                    },
+                    "yaxis": {
+                        "axisLabel": "Fraction of Mutations Retained in Genome",
+                        "axisLabelFontSizePixels": 12
+                    },
+                    "legend": {
+                        "position": "ne"
+                    },
+                    "series": {
+                        "stack": true,
+                        "bars": {
+                            "show": true,
+                            "autoWidth": true
+                        }
+                    },
+                    "selection": {
+                        "mode": "xy"
+                    }
+                },
+                "x_axis_scale": "log"
+            }
         },
         {
             "title": "SNP Frequencies",

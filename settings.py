@@ -524,6 +524,13 @@ def get_config_fields(params):
             },
             'help': 'if 0 < n < 100 explicitly call Go garbage collection after counting this percent of individuals (with a min bound of 100 individuals and max bound of 500), or if n >= 100 call GC after counting alleles from this many individuals. This helps memory not balloon right at the end of a long run, but will take a little longer.',
         },
+        'files_to_output_all': {
+            'label': 'All',
+            'value': True,
+            'type': {
+                'id': 'boolean',
+            },
+        },
         'files_to_output_fit': {
             'label': 'mendel.fit',
             'value': True,
@@ -631,6 +638,7 @@ def get_config_tabs():
             'id': 'output_files',
             'title': 'Output Files',
             'fields': [
+                {'id': 'files_to_output_all'},
                 {'id': 'files_to_output_fit'},
                 {'id': 'files_to_output_hst'},
                 {'id': 'files_to_output_allele_bins'},

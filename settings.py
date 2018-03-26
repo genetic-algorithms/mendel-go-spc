@@ -320,7 +320,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'number',
                 'min': 0.0,
-                'max': 1.0,
+                'max': 100000.0,
                 'step': 'any',
             },
             'help': 'Used along with num_contrasting_alleles to set the total fitness effect of all of the favorable initial alleles in an individual.',

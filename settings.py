@@ -298,7 +298,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'number',
                 'min': 0,
-                'max': 100000,
+                'max': 1000000000,
                 'step': 1,
             },
             'help': 'Number of initial contrasting alleles (pairs) given to each individual. Used to start the population with pre-existing diversity.',

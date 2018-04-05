@@ -303,17 +303,6 @@ def get_config_fields(params):
             },
             'help': 'Number of initial contrasting alleles (pairs) given to each individual. Used to start the population with pre-existing diversity.',
         },
-        'initial_alleles_pop_frac': {
-            'label': 'Fraction of the population that should have initial alleles',
-            'value': params['initial_alleles_pop_frac'],
-            'type': {
-                'id': 'number',
-                'min': 0.0,
-                'max': 1.0,
-                'step': 'any',
-            },
-            'help': 'Used along with num_contrasting_alleles to set the fraction of the initial population that should have num_contrasting_alleles alleles',
-        },
         'max_total_fitness_increase': {
             'label': 'The total fitness effect of all of the favorable initial alleles in an individual',
             'value': params['max_total_fitness_increase'],
@@ -324,6 +313,36 @@ def get_config_fields(params):
                 'step': 'any',
             },
             'help': 'Used along with num_contrasting_alleles to set the total fitness effect of all of the favorable initial alleles in an individual.',
+        },
+        'initial_allele_fitness_model': {
+            'label': 'Initial Alleles model',
+            'value': params['initial_allele_fitness_model'],
+            'type': {
+                'id': 'select',
+                'choices': [
+                    ('uniform', 'Uniform (default)'),
+                    ('variablefreq', 'Variable Frequencies'),
+                ],
+            },
+        },
+        'initial_alleles_pop_frac': {
+            'label': 'For Uniform: Fraction of the population with initial alleles',
+            'value': params['initial_alleles_pop_frac'],
+            'type': {
+                'id': 'number',
+                'min': 0.0,
+                'max': 1.0,
+                'step': 'any',
+            },
+            'help': 'Used for Uniform model along with num_contrasting_alleles to set the fraction of the initial population that should have num_contrasting_alleles alleles',
+        },
+        'initial_alleles_frequencies': {
+            'label': 'For Variable Frequencies: alleleFraction1:frequency1, alleleFraction2:frequency2, ...',
+            'value': params['initial_alleles_frequencies'],
+            'type': {
+                'id': 'text'
+            },
+            'help': 'Used for Variable Frequencies model along with num_contrasting_alleles to define portions of the total num_contrasting_alleles alleles and what frequency each should have',
         },
         'pop_growth_model': {
             'label': 'Population growth model',
@@ -614,8 +633,10 @@ def get_config_tabs():
                 {'id': 'num_linkage_subunits'},
                 {'id': 'num_contrasting_alleles',
                     'children': [
-                        {'id': 'initial_alleles_pop_frac'},
                         {'id': 'max_total_fitness_increase'},
+                        {'id': 'initial_allele_fitness_model'},
+                        {'id': 'initial_alleles_pop_frac'},
+                        {'id': 'initial_alleles_frequencies'},
                     ],
                 },
                 {'id': 'pop_growth_model',

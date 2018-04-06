@@ -28,10 +28,6 @@ def get_hidden_fields(tabs, params):
     return hidden_fields
 
 
-def strip_quotes(s):
-    return s[1:-1]
-
-
 def render_form_row(config_field, config_field_id, label_index):
     template_str = '''
         <div class="form-row">
@@ -152,7 +148,7 @@ def render_text_widget(widget, widget_id):
 
     template_kwargs = {
         'id': widget_id,
-        'value': strip_quotes(widget['value']),
+        'value': widget['value'],
     }
 
     return template(template_str, **template_kwargs)

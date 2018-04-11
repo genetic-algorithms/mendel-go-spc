@@ -505,14 +505,6 @@ def get_config_fields(params):
             },
             'help': 'If checked, do not output the 0-1% allele bin for allele plots. This is consistent with the way most geneticists plot this data.',
         },
-        'count_duplicate_alleles': {
-            'label': 'Do not filter out multiples of the same allele in an individual',
-            'value': params['count_duplicate_alleles'],
-            'type': {
-                'id': 'boolean',
-            },
-            'help': 'If checked, when counting alleles in an individual count all alleles, even if the same allele id is encountered more than once.',
-        },
         'verbosity': {
             'label': 'The verbosity of the output',
             'value': params['verbosity'],
@@ -681,7 +673,6 @@ def get_config_tabs():
             'id': 'advanced',
             'title': 'Advanced Options',
             'fields': [
-                {'id': 'count_duplicate_alleles'},
                 {'id': 'random_number_seed'},
                 {'id': 'num_threads'},
                 {'id': 'force_gc'},

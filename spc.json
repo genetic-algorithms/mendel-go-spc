@@ -314,11 +314,11 @@
                 ],
                 "flot_options": {
                     "xaxis": {
-                        "axisLabel": "Mean Minor Allele Frequency",
+                        "axisLabel": "Minor Allele Frequency",
                         "axisLabelFontSizePixels": 12
                     },
                     "yaxis": {
-                        "axisLabel": "Proportion of SNPs",
+                        "axisLabel": "Proportion of Minor SNPs",
                         "axisLabelFontSizePixels": 12
                     },
                     "legend": {
@@ -329,7 +329,7 @@
                         "bars": {
                             "show": true,
                             "lineWidth": 0,
-                            "barWidth": 0.009,
+                            "barWidth": 0.9,
                             "fill": 0.8
                         }
                     },

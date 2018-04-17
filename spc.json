@@ -121,7 +121,7 @@
                         "mode": "xy"
                     }
                 },
-                "x_axis_scale": "negative_log"
+                "flot_options_transformer": "options.xaxis.transform = function(x) { return -Math.log(x) }; options.xaxis.inverseTransform = function(x) { return Math.exp(-x) };"
             }
         },
         {
@@ -184,7 +184,7 @@
                         "mode": "xy"
                     }
                 },
-                "x_axis_scale": "log"
+                "flot_options_transformer": "options.xaxis.max = jobParams.max_fav_fitness_gain; options.xaxis.transform = function(x) { return Math.log(x) }; options.xaxis.inverseTransform = function(x) { return Math.exp(x) };"
             }
         },
         {

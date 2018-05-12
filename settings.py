@@ -320,10 +320,11 @@ def get_config_fields(params):
             'type': {
                 'id': 'select',
                 'choices': [
-                    ('uniform', 'Uniform (default)'),
-                    ('variablefreq', 'Variable Frequencies'),
+                    ('variablefreq', 'Variable Frequencies (default)'),
+                    ('allunique', 'All Unique Alleles'),
                 ],
             },
+            'help': 'Choices: "variablefreq" - different frequenceis for different fraction of the alleles like 0.25:0.1, 0.5:0.25, 0.25:0.5, "allunique" - unique allele pairs in every indiv',
         },
         'initial_alleles_pop_frac': {
             'label': 'For Uniform: Fraction of the population with initial alleles',
@@ -484,7 +485,7 @@ def get_config_fields(params):
                 'max': 9223372036854775807,
                 'step': 1,
             },
-            'help': 'At several stages within the MENDEL program, a random number generator is required. When an experiment needs to be independently replicated, the “random number seed” must be changed. If this is not done, the second experiment will be an exact duplicate of the earlier run.',
+            'help': 'At several stages within the MENDEL program, a random number generator is required. When an experiment needs to be independently replicated, the “random number seed” must be changed. If this is not done, the second experiment will be an exact duplicate of the earlier run. Or you can set this value to 0 and get a unique seed every time.',
         },
         'plot_allele_gens': {
             'label': 'Plot alleles every n generations',

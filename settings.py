@@ -11,7 +11,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'number',
                 'min': 2,
-                'max': 100000,
+                'max': 1000000,
                 'step': 1,
             },
             'help': 'This is the number of reproducing adults, after selection. This number is normally kept constant, except when fertility is insufficient to allow replacement, or when population growth is specified below. For smaller computer systems such as PCs, population size must remain small (100-5000) or the program will run out of memory. Population sizes smaller than 1000 can be strongly affected by inbreeding and drift.',
@@ -22,7 +22,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'number',
                 'min': 0,
-                'max': 100000,
+                'max': 1000000,
                 'step': 1,
             },
             'help': 'The number of generations the program should run. If there are too many generations specified, smaller computers will run out of memory because of the accumulation of large numbers of mutations, and the experiment will terminate prematurely. This problem can be mitigated by tracking only the larger-effect mutations (see computation parameters).  The program also terminates prematurely if fitness reaches a specified extinction threshold (default = 0.0) or if the population size shrinks to just one individual. In the special case of pop_growth_model==exponential, this value can be 0 which indicates the run should continue until max_pop_size is reached.',
@@ -79,7 +79,7 @@ def get_config_fields(params):
             'type': {
                 'id': 'number',
                 'min': 100,
-                'max': 1e11,
+                'max': 1e13,
                 'step': 1,
             },
             'help': 'The distribution of deleterious mutational effects must in some way be adjusted to account for genome size. An approximate yet reasonable means for doing this is to define the minimal mutational effect as being 1 divided by the functional haploid genome size. The result of this adjustment is that smaller genomes have “flatter” distributions of deleterious mutations, while larger genomes have “steeper” distribution curves. Because we consider all entirely neutral mutations separately, we only consider the size of the functional genome, so we choose the default genome size to be 300 million (10% of the actual human genome size).',
@@ -196,7 +196,7 @@ def get_config_fields(params):
                     ('fulltrunc', 'Full truncation'),
                     ('ups', 'Unrestricted probability selection'),
                     ('spps', 'Strict proportionality probability selection (default)'),
-                    ('partialtrunc', 'Partial truncation selection'),
+                    ('partialtrunc', 'Partial truncation'),
                 ],
             },
         },
@@ -222,6 +222,17 @@ def get_config_fields(params):
             },
             'help': 'If a population’s fitness is increasing or declining, heritability (as calculated in the normal way), tends to scale with fitness, and so the implied “environmental noise” diminishes or increases as fitness diminishes or increases. This seems counter-intuitive. Also, with truncation selection, phenotypic variance becomes un-naturally small. For these reasons, it is desirable to model a component of environmental noise that does not scale with fitness variation. The units for this non-scaling noise parameter are based upon standard deviations from the initial fitness of 1.0. For simplicity, a reasonable value is 0.05, but reasonable values probably exceed 0.01 and might exceed 0.1.',
             'more_help_url': '/static/apps/mendel/help.html#nsn',
+        },
+        'partial_truncation_value': {
+            'label': 'For Partial Truncation: partial truncation value:',
+            'value': params['partial_truncation_value'],
+            'type': {
+                'id': 'number',
+                'min': 0,
+                'max': 1,
+                'step': 'any',
+            },
+            'help': 'Used in Parial Truncation selection, an individuals fitness is divided by: partial_truncation_value + (1. - partial_truncation_value)*randomnum(1).',
         },
         'reproductive_rate': {
             'label': 'Reproductive rate',
@@ -327,7 +338,7 @@ def get_config_fields(params):
             'help': 'Choices: "variablefreq" - different frequenceis for different fraction of the alleles like 0.25:0.1, 0.5:0.25, 0.25:0.5, "allunique" - unique allele pairs in every indiv',
         },
         'initial_alleles_pop_frac': {
-            'label': 'For Uniform: Fraction of the population with initial alleles',
+            'label': 'For All Unique: Fraction of the population with initial alleles',
             'value': params['initial_alleles_pop_frac'],
             'type': {
                 'id': 'number',
@@ -335,7 +346,7 @@ def get_config_fields(params):
                 'max': 1.0,
                 'step': 'any',
             },
-            'help': 'Used for Uniform model along with num_contrasting_alleles to set the fraction of the initial population that should have num_contrasting_alleles alleles',
+            'help': 'Used for All Unique model along with num_contrasting_alleles to set the fraction of the initial population that should have num_contrasting_alleles alleles',
         },
         'initial_alleles_frequencies': {
             'label': 'For Variable Frequencies: alleleFraction1:frequency1, alleleFraction2:frequency2, ...',
@@ -560,12 +571,12 @@ def get_config_fields(params):
             'help': 'This contains data needed for the "Average Mutations/Individual" plot.',
         },
         'files_to_output_allele_bins': {
-            'label': 'allele-bins/',
+            'label': 'allele bin and distribution files',
             'value': True,
             'type': {
                 'id': 'boolean',
             },
-            'help': 'This contains data needed for the "SNP Frequencies" and "Minor Allele Frequencies" plots.',
+            'help': 'This contains data needed for the "SNP Frequencies", "Minor Allele Frequencies", and allele distribution plots.',
         },
     }
 
@@ -609,6 +620,7 @@ def get_config_tabs():
                 {'id': 'selection_model'},
                 {'id': 'heritability'},
                 {'id': 'non_scaling_noise'},
+                {'id': 'partial_truncation_value'},
             ],
         },
         {

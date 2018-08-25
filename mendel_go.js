@@ -93,6 +93,7 @@
             bottleneck_generation: document.querySelector('input[name="bottleneck_generation"]'),
             bottleneck_pop_size: document.querySelector('input[name="bottleneck_pop_size"]'),
             num_bottleneck_generations: document.querySelector('input[name="num_bottleneck_generations"]'),
+            multiple_bottlenecks: document.querySelector('input[name="multiple_bottlenecks"]'),
             tracking_threshold: document.querySelector('input[name="tracking_threshold"]'),
             plot_allele_gens: document.querySelector('input[name="plot_allele_gens"]'),
             omit_first_allele_bin: document.getElementById('omit_first_allele_bin'),
@@ -131,22 +132,23 @@
                 parseFloat(fields.num_contrasting_alleles.value) === 0 ||
                 fields.initial_allele_fitness_model.value === 'allunique'
             );
-            fields.pop_growth_rate.readOnly = (fields.pop_growth_model.value === 'none');
+
+            fields.pop_growth_rate.readOnly = (
+                fields.pop_growth_model.value === 'none' ||
+                fields.pop_growth_model.value === 'multi-bottleneck'
+            );
             fields.pop_growth_rate2.readOnly = (fields.pop_growth_model.value !== 'founders');
             fields.max_pop_size.readOnly = (fields.pop_growth_model.value !== 'exponential');
             fields.carrying_capacity.readOnly = (
                 fields.pop_growth_model.value === 'none' ||
-                fields.pop_growth_model.value === 'exponential'
+                fields.pop_growth_model.value === 'exponential' ||
+                fields.pop_growth_model.value === 'multi-bottleneck'
             );
             fields.bottleneck_generation.readOnly = (fields.pop_growth_model.value !== 'founders');
-            fields.bottleneck_pop_size.readOnly = (
-                fields.pop_growth_model.value !== 'founders' ||
-                parseFloat(fields.bottleneck_generation.value) === 0
-            );
-            fields.num_bottleneck_generations.readOnly = (
-                fields.pop_growth_model.value !== 'founders' ||
-                parseFloat(fields.bottleneck_generation.value) === 0
-            );
+            fields.bottleneck_pop_size.readOnly = (fields.pop_growth_model.value !== 'founders');
+            fields.num_bottleneck_generations.readOnly = (fields.pop_growth_model.value !== 'founders');
+            fields.multiple_bottlenecks.readOnly = (fields.pop_growth_model.value !== 'multi-bottleneck');
+
             fields.tracking_threshold.readOnly = (!fields.files_to_output_all.checked && !fields.files_to_output_allele_bins.checked);
             fields.plot_allele_gens.readOnly = (!fields.files_to_output_all.checked && !fields.files_to_output_allele_bins.checked);
             fields.omit_first_allele_bin.disabled = (!fields.files_to_output_all.checked && !fields.files_to_output_allele_bins.checked);

@@ -366,9 +366,10 @@ def get_config_fields(params):
                     ('exponential', 'Exponential'),
                     ('capacity', 'Carrying capacity'),
                     ('founders', 'Founders effect'),
+                    ('multi-bottleneck', 'Multiple bottlenecks'),
                 ],
             },
-            'help': 'Choices: "none" - no population growth, "exponential" - exponential growth model, "capacity" - carrying-capacity model, "founders" - founders effect',
+            'help': 'Choices: "none" - no population growth, "exponential" - exponential growth model until max pop or number of generations, "capacity" - pop growth to asymptotically approach the pop carrying capacity, "founders" - exponential growth until bottleneck generations, a 2nd exponential growth rate after bottleneck until the carrying capacity or number of generations is reached, "multi-bottleneck" - like founders except an arbitrary number of comma-separated 5-tuples growth-rate:max-pop:bottle-start:bottle-size:bottle-gens',
         },
         'pop_growth_rate': {
             'label': 'Population growth rate each generation',
@@ -445,6 +446,14 @@ def get_config_fields(params):
                 'max': 100000,
                 'step': 1,
             },
+        },
+        'multiple_bottlenecks': {
+            'label': 'For Multiple Bottlenecks: growth-rate:max-pop:bottle-start:bottle-size:bottle-gens, ...',
+            'value': params['multiple_bottlenecks'],
+            'type': {
+                'id': 'text'
+            },
+            'help': 'Used for Multiple Bottlenecks population growth model, instead of any of the other population growth and bottleneck parameters.',
         },
         'tracking_threshold': {
             'label': 'Do not track mutations below this fitness effect',
@@ -650,12 +659,10 @@ def get_config_tabs():
                         {'id': 'pop_growth_rate2'},
                         {'id': 'max_pop_size'},
                         {'id': 'carrying_capacity'},
-                    ],
-                },
-                {'id': 'bottleneck_generation',
-                    'children': [
+                        {'id': 'bottleneck_generation'},
                         {'id': 'bottleneck_pop_size'},
                         {'id': 'num_bottleneck_generations'},
+                        {'id': 'multiple_bottlenecks'},
                     ],
                 },
             ],
